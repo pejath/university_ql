@@ -43,14 +43,14 @@ RSpec.describe 'Faculty queries' do
     GQL
 
     it 'returns one faculty' do
-      data = result['data']
+      data = result.dig('data')
       expect(data.count).to eq(1)
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'faculty')).to eq([
+      expect(result.dig('data', 'faculty')).to eq(
         { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' }
-                                                  ])
+                                                  )
     end
   end
 end

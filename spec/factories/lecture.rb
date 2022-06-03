@@ -7,8 +7,8 @@ FactoryBot.define do
     association :subject, factory: :subject
 
     weekday { %w[Monday Tuesday Wednesday Thursday Friday Saturday].sample  }
-    corpus { rand(1..1000) }
-    auditorium { rand(1..1000) }
+    sequence(:corpus) { |n| n }
+    sequence(:auditorium) { |n| n }
   end
 
   factory :invalid_lecture, class: Lecture do

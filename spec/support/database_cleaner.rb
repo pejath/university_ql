@@ -1,8 +1,8 @@
 RSpec.configure do |config|
-  config.before(:suite) do
+  config.after(:each) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
-    # DatabaseCleaner.clean_with(:truncation, { pre_count: true, reset_count: true })
+    FactoryBot.reload
   end
 
   config.around(:each) do |example|
@@ -10,5 +10,6 @@ RSpec.configure do |config|
       example.run
     end
   end
+
 
 end

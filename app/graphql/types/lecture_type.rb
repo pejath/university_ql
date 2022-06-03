@@ -12,7 +12,7 @@ module Types
     # belongs_to
     field :group, GroupType
     field :lecturer, LecturerType
-    field :subject_id, SubjectType
+    field :subject, SubjectType
     field :lecture_time, LectureTimeType
   end
 end

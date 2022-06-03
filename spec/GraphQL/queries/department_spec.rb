@@ -62,10 +62,10 @@ RSpec.describe 'Department queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'department')).to eq([
+      expect(result.dig('data', 'department')).to eq(
         { 'id' => '1', 'name' => 'department_1', 'departmentType' => 0, 'formationDate' => '2002-12-20',
           'faculty' => { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } }
-                                                      ])
+                                                      )
     end
   end
 end

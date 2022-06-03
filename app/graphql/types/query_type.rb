@@ -47,6 +47,19 @@ module Types
       Lecturer.find(id)
     end
 
+    # lecture
+    field :lectures, [LectureType], null: false
+    def lectures
+      Lecture.preload(:lecture_time, :lecturer, :group, :subject)
+    end
+
+    field :lecture, LectureType, null: false do
+      argument :id, ID, required: true
+    end
+    def lecture(id:)
+      Lecture.preload(:lecture_time, :lecturer, :group, :subject).find(id)
+    end
+
     field :free_curators, [LecturerType], null: false do
       argument :group, ID, required: true
     end

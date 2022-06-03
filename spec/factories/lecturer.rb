@@ -10,7 +10,7 @@ FactoryBot.define do
     association :department, factory: :department
 
     name { Faker::Name.name }
-    academic_degree {}
+    academic_degree { 1 }
   end
 
   factory :invalid_lecturer, class: Lecturer do
