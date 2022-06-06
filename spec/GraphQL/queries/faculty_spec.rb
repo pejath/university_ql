@@ -50,7 +50,7 @@ RSpec.describe 'Faculty queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'faculty')).to eq(
         { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' }
-                                                  )
+                                               )
     end
   end
 end
