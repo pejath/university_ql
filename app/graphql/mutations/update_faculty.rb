@@ -4,7 +4,7 @@ module Mutations
     argument :name, String, required: false
     argument :formation_date, GraphQL::Types::ISO8601Date, required: false
 
-    type Types::FacultyType
+    type Types::Faculty
 
     def resolve(id:, name:, formation_date:)
       faculty = Faculty.find(id)

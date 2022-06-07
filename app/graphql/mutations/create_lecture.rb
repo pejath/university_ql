@@ -9,7 +9,7 @@ module Mutations
     argument :weekday, Integer, required: true
     argument :auditorium, Integer, required: true
 
-    type Types::LectureType
+    type Types::Lecture
 
     def resolve(group_id:, subject_id:, lecturer_id:, lecture_time_id:, corpus:, weekday:, auditorium:)
       Lecture.create(

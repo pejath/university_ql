@@ -7,7 +7,7 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     # belongs_to
-    field :subject, SubjectType
-    field :lecturer, LecturerType
+    field :subject, Subject
+    field :lecturer, Lecturer
   end
 end

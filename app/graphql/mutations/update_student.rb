@@ -4,7 +4,7 @@ module Mutations
     argument :name, String, required: true
     argument :group_id, ID, required: true
 
-    type Types::StudentType
+    type Types::Student
 
     def resolve(id:, name:, group_id:)
       student = Student.find(id)

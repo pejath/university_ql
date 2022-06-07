@@ -3,7 +3,7 @@ module Mutations
     argument :name, String, required: true
     argument :group_id, ID, required: true
 
-    type Types::StudentType
+    type Types::Student
 
     def resolve(name:, group_id:)
       Student.create(

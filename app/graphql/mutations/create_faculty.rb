@@ -3,7 +3,7 @@ module Mutations
     argument :name, String, required: true
     argument :formation_date, GraphQL::Types::ISO8601Date, required: true
 
-    type Types::FacultyType
+    type Types::Faculty
 
     def resolve(formation_date: nil, name: nil)
       Faculty.create!(

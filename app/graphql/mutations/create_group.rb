@@ -3,10 +3,10 @@ module Mutations
     argument :curator_id, ID, required: true
     argument :department_id, ID, required: true
     argument :course, Integer, required: true
-    argument :form_of_education, Integer, required: true
     argument :specialization_code, Integer, required: true
+    argument :form_of_education, Types::FormOfEducation, required: true
 
-    type Types::GroupType
+    type Types::Group
 
     def resolve(curator_id:, department_id:, course:, form_of_education:, specialization_code:)
       curator = Lecturer.find(curator_id)

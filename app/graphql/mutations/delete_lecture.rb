@@ -2,7 +2,7 @@ module Mutations
   class DeleteLecture < BaseMutation
     argument :id, ID, required: true
 
-    type Types::LectureType
+    type Types::Lecture
 
     def resolve(id:)
       lecture = Group.find(id)

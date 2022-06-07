@@ -6,7 +6,7 @@ module Mutations
     argument :subject_id, ID, required: true
     argument :lecturer_id, ID, required: true
 
-    type Types::MarkType
+    type Types::Mark
 
     def resolve(student_id:, subject_id:, lecturer_id:, mark:)
       mark.update(

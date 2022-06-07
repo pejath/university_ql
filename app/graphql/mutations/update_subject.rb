@@ -3,7 +3,7 @@ module Mutations
     argument :id, ID, required: true
     argument :name, String, required: true
 
-    type Types::SubjectType
+    type Types::Subject
 
     def resolve(id:, name:)
       subject = Subject.find(id)

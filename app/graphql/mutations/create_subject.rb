@@ -2,7 +2,7 @@ module Mutations
   class CreateSubject < BaseMutation
     argument :name, String, required: true
 
-    type Types::SubjectType
+    type Types::Subject
 
     def resolve(name:)
       Subject.create(

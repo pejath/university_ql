@@ -22,7 +22,7 @@ RSpec.describe 'Faculty queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'createFaculty')).to eq(
-                                                       { 'formationDate'=>'1990-03-21', 'name'=>'Biology' }
+        { 'formationDate'=>'1990-03-21', 'name'=>'Biology' }
                                                      )
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe 'Faculty queries' do
       expect(faculty.name).to eq('faculty_1')
       expect(faculty.formation_date.to_s).to eq('2002-12-20')
       expect(result.dig('data', 'updateFaculty')).to eq(
-                                                       { 'id'=>'1', 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
+        { 'id'=>'1', 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
                                                      )
     end
   end
@@ -67,7 +67,7 @@ RSpec.describe 'Faculty queries' do
 
     it 'deletes correct faculty' do
       expect(result.dig('data', 'deleteFaculty')).to eq(
-                                                       { 'id'=>'1', 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
+        { 'id'=>'1', 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
                                                      )
     end
   end

@@ -4,7 +4,7 @@ module Mutations
     argument :name, String, required: true
     argument :academic_degree, Integer, required: true
 
-    type Types::LecturerType
+    type Types::Lecturer
 
     def resolve(department_id:, name:, academic_degree:)
       Lecturer.create(

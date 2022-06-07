@@ -3,10 +3,10 @@ module Mutations
     argument :id, ID, required: true
     argument :name, String, required: true
     argument :faculty_id, ID, required: true
-    argument :department_type, Integer, required: true
+    argument :department_type, Types::DepartmentTypes, required: true
     argument :formation_date, GraphQL::Types::ISO8601Date, required: true
 
-    type Types::DepartmentType
+    type Types::Department
 
     def resolve(id:, name:, faculty_id:, department_type:, formation_date:)
       department = Department.find(id)

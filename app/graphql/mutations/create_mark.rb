@@ -6,7 +6,7 @@ module Mutations
     argument :lecturer_id, ID, required: true
 
 
-    type Types::MarkType
+    type Types::Mark
 
     def resolve(student_id:, subject_id:, lecturer_id:, mark:)
       Mark.create(

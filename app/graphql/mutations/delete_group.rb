@@ -2,7 +2,7 @@ module Mutations
   class DeleteGroup < BaseMutation
     argument :id, ID, required: true
 
-    type Types::GroupType
+    type Types::Group
 
     def resolve(id:)
       group = Group.find(id)

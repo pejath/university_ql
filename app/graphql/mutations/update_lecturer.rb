@@ -5,7 +5,7 @@ module Mutations
     argument :name, String, required: true
     argument :academic_degree, Integer, required: true
 
-    type Types::LecturerType
+    type Types::Lecturer
 
     def resolve(id:, department_id:, name:, academic_degree:)
       lecturer = Lecturer.find(id)
