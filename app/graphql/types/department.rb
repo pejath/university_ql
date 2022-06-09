@@ -8,6 +8,9 @@ module Types
   end
 
   class Department < Types::BaseObject
+
+    implements Interfaces::Timestamps
+
     field :id, ID, null: false
     field :name, String, null: false
     field :department_type, DepartmentTypes, null: false

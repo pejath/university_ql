@@ -8,12 +8,13 @@ module Types
   end
 
   class Group < Types::BaseObject
+
+    implements Interfaces::Timestamps
+
     field :id, ID, null: false
     field :course, Integer, null: false
     field :specialization_code, Integer, null: false
     field :form_of_education, FormOfEducation, null: false
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     # belongs_to
     field :department, Department, null: false

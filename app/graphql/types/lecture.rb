@@ -11,12 +11,13 @@ module Types
   end
 
   class Lecture < Types::BaseObject
+
+    implements Interfaces::Timestamps
+
     field :id, ID, null: false
     field :corpus, Integer, null: false
     field :weekday, Weekday, null: false
     field :auditorium, Integer, null: false
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     # belongs_to
     field :group, Group, null: false
