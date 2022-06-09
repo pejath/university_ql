@@ -7,8 +7,8 @@ module Types
     value 'Military', value: 'Military'
   end
 
-  class Department < Types::BaseObject
-    field :id, ID, null: false
+  class Department < Types::BaseRecordObject
+
     field :name, String, null: false
     field :department_type, DepartmentTypes, null: false
     field :formation_date, GraphQL::Types::ISO8601Date, null: false

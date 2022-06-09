@@ -7,8 +7,7 @@ module Types
     value 'Full_time', value: 'full_time'
   end
 
-  class Group < Types::BaseObject
-    field :id, ID, null: false
+  class Group < Types::BaseRecordObject
     field :course, Integer, null: false
     field :specialization_code, Integer, null: false
     field :form_of_education, FormOfEducation, null: false

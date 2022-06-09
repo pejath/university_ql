@@ -10,8 +10,7 @@ module Types
     value 'Saturday', value: 'Saturday'
   end
 
-  class Lecture < Types::BaseObject
-    field :id, ID, null: false
+  class Lecture < Types::BaseRecordObject
     field :corpus, Integer, null: false
     field :weekday, Weekday, null: false
     field :auditorium, Integer, null: false
