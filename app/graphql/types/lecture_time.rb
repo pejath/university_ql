@@ -8,6 +8,9 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     # has_many
-    field :lectures, [Lecture], null: false
+    field :lectures, [Lecture], null: true
+    def lectures
+      defer_load_has_many(::Lecture, :lecture_time, object)
+    end
   end
 end

@@ -32,25 +32,5 @@ module Sources
       dataloader.with(Sources::ActiveRecordForeignObjects, scope, fk, options).load(ref)
     end
 
-    # When a record only has a single attachment, there will be zero or one records
-    #
-    def defer_load_attachment(attachment_name, ref)
-      defer_load_attachments(attachment_name, ref)&.first
-    end
-
-    # Defer loading a attachments from ActiveStorage.
-    # This requires a join and 3 elements of criteria, so it gets its own loader.
-    #
-    def defer_load_attachments(attachment_name, ref)
-      dataloader.with(Sources::ActiveStorageAttachments, attachment_name).load(ref)
-    end
-
-    def defer_load_currency(iso_code)
-      dataloader.with(Sources::Currencies).load(iso_code)
-    end
-
-    def defer_load_country(iso_code)
-      dataloader.with(Sources::Countries).load(iso_code)
-    end
   end
 end

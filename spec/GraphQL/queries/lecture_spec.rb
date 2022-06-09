@@ -6,7 +6,7 @@ RSpec.describe 'Lecture queries' do
   subject(:result) { QlSchema.execute(query) }
 
   describe '#lectures' do
-    let!(:lectures) { FactoryBot.create_list(:lecture, 2) }
+    let!(:lectures) { FactoryBot.create_list(:lecture, 2, weekday: 'Saturday') }
     let(:query) { <<~GQL }
         query allLectures{
         lectures{
@@ -36,14 +36,14 @@ RSpec.describe 'Lecture queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'lectures')).to eq([
-        {'weekday'=>0, 'corpus'=>1, 'auditorium'=>1, 'lectureTime'=>{'id'=>'1'}, 'group'=>{'id'=>'1'}, 'lecturer'=>{'id'=>'2'}, 'subject'=>{'id'=>'1'}},
-        {'weekday'=>0, 'corpus'=>2, 'auditorium'=>2, 'lectureTime'=>{'id'=>'2'}, 'group'=>{'id'=>'2'}, 'lecturer'=>{'id'=>'4'}, 'subject'=>{'id'=>'2'}}
+        {'weekday'=>'Saturday', 'corpus'=>1, 'auditorium'=>1, 'lectureTime'=>{'id'=>'1'}, 'group'=>{'id'=>'1'}, 'lecturer'=>{'id'=>'2'}, 'subject'=>{'id'=>'1'}},
+        {'weekday'=>'Saturday', 'corpus'=>2, 'auditorium'=>2, 'lectureTime'=>{'id'=>'2'}, 'group'=>{'id'=>'2'}, 'lecturer'=>{'id'=>'4'}, 'subject'=>{'id'=>'2'}}
                                                     ])
     end
   end
 
   describe '#lecture(id)' do
-    let!(:lecture) { create(:lecture) }
+    let!(:lecture) { create(:lecture, weekday: 'Monday') }
     let(:query) { <<~GQL }
       query Lecture{
            lecture(id: 1){
@@ -73,7 +73,7 @@ RSpec.describe 'Lecture queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'lecture')).to eq(
-        {'weekday'=>0, 'corpus'=>1, 'auditorium'=>1, 'lectureTime'=>{'id'=>'1'}, 'group'=>{'id'=>'1'}, 'lecturer'=>{'id'=>'2'}, 'subject'=>{'id'=>'1'}}
+        {'weekday'=>'Monday', 'corpus'=>1, 'auditorium'=>1, 'lectureTime'=>{'id'=>'1'}, 'group'=>{'id'=>'1'}, 'lecturer'=>{'id'=>'2'}, 'subject'=>{'id'=>'1'}}
                                                )
     end
   end

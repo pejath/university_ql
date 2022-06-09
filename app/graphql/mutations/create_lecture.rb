@@ -6,7 +6,7 @@ module Mutations
     argument :lecture_time_id, ID, required: true
 
     argument :corpus, Integer, required: true
-    argument :weekday, Integer, required: true
+    argument :weekday, Types::Weekday, required: true
     argument :auditorium, Integer, required: true
 
     type Types::Lecture

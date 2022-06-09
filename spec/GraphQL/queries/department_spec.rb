@@ -30,9 +30,9 @@ RSpec.describe 'Department queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'departments')).to eq([
-        { 'id' => '1', 'name' => 'department_1', 'departmentType' => 0, 'formationDate' => '2002-12-20',
+        { 'id' => '1', 'name' => 'department_1', 'departmentType' => 'Basic', 'formationDate' => '2002-12-20',
           'faculty' => { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } },
-        { 'id' => '2', 'name' => 'department_2', 'departmentType' => 0, 'formationDate' => '2002-12-20',
+        { 'id' => '2', 'name' => 'department_2', 'departmentType' => 'Basic', 'formationDate' => '2002-12-20',
           'faculty' => { 'id' => '2', 'name' => 'faculty_2', 'formationDate' => '2002-12-20' } }
                                                       ])
     end
@@ -63,7 +63,7 @@ RSpec.describe 'Department queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'department')).to eq(
-        { 'id' => '1', 'name' => 'department_1', 'departmentType' => 0, 'formationDate' => '2002-12-20',
+        { 'id' => '1', 'name' => 'department_1', 'departmentType' => 'Basic', 'formationDate' => '2002-12-20',
           'faculty' => { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } }
                                                   )
     end

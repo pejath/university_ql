@@ -31,10 +31,10 @@ RSpec.describe 'Lecturer queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'lecturers')).to eq([
         {'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-         'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>0, 'formationDate'=>'2002-12-20'}},
+         'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}},
 
         {'id'=>'2', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>0, 'formationDate'=>'2002-12-20'}}
+         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}}
                                                     ])
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe 'Lecturer queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'lecturer')).to eq(
         {'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-        'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>0, 'formationDate'=>'2002-12-20'}}
+        'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}}
                                                 )
     end
   end

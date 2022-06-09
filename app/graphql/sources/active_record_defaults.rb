@@ -5,22 +5,22 @@ module Sources
   class ActiveRecordDefaults
     STRICT_LOADING_DEFAULT = true
 
-    DEFAULT_OPTIONS_BY_MODEL = {
-      ::RequestItem => { preload: [:request] },
-
-      # Activity rendering happens outside of GraphQL so it can't use batch loading.
-      # This interim solution preloads all the relations that the activity renderer needs
-      # *and* disabled strict loading since activities can have custom rendering procs that
-      # try to lazy-load additional relations e.g. `activity.trackable.request.subject`
-      ::Activity => {
-        preload: [:actor, :trackable, :event_subject],
-        strict_loading: false,
-      },
-    }
+    # DEFAULT_OPTIONS_BY_MODEL = {
+    #   ::RequestItem => { preload: [:request] },
+    #
+    #   # Activity rendering happens outside of GraphQL so it can't use batch loading.
+    #   # This interim solution preloads all the relations that the activity renderer needs
+    #   # *and* disabled strict loading since activities can have custom rendering procs that
+    #   # try to lazy-load additional relations e.g. `activity.trackable.request.subject`
+    #   ::Activity => {
+    #     preload: [:actor, :trackable, :event_subject],
+    #     strict_loading: false,
+    #   },
+    # }
 
     class << self
       def options_for(model_class, overrides = {})
-        DEFAULT_OPTIONS_BY_MODEL.fetch(model_class, {}).merge(overrides)
+        {}.merge(overrides)
       end
 
       def apply_to(scope_or_model_class, overrides = {})

@@ -15,9 +15,19 @@ module Types
 
     # belongs_to
     field :faculty, Faculty, null: false
+    def faculty
+      defer_batch_load(::Faculty, object.faculty_id)
+    end
 
     # has_many
-    field :groups, [Group], null: false
-    field :lecturers, [Lecturer], null: false
+    field :groups, [Group], null: true
+    def groups
+      defer_load_has_many(::Group, :department, object)
+    end
+
+    field :lecturers, [Lecturer], null: true
+    def lecturers
+      defer_load_has_many(::Lecturer, :department, object)
+    end
   end
 end

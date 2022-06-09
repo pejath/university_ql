@@ -32,18 +32,19 @@ RSpec.describe 'Group queries' do
 
     it 'returns all groups' do
       data = result.dig('data', 'groups')
+      puts result
       expect(data.count).to eq(2)
     end
 
     it 'returns correct data' do
       expect(result.dig('data', 'groups')).to eq([
-        {'id'=>'1', 'course'=>2, 'formOfEducation'=>0, 'specializationCode'=>1,
+        {'id'=>'1', 'course'=>2, 'formOfEducation'=>'Evening', 'specializationCode'=>1,
          'curator'=>{'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1},
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>0, 'formationDate'=>'2002-12-20'}},
+         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}},
 
-        {'id'=>'2', 'course'=>2, 'formOfEducation'=>0, 'specializationCode'=>2,
+        {'id'=>'2', 'course'=>2, 'formOfEducation'=>'Evening', 'specializationCode'=>2,
          'curator'=>{'id'=>'2', 'name'=>'Jason Padberg', 'academicDegree'=>1},
-         'department'=>{'id'=>'4', 'name'=>'department_4', 'departmentType'=>0, 'formationDate'=>'2002-12-20'}}])
+         'department'=>{'id'=>'4', 'name'=>'department_4', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}}])
     end
   end
 
@@ -78,9 +79,9 @@ RSpec.describe 'Group queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'group')).to eq(
-        {'id'=>'1', 'course'=>2, 'formOfEducation'=>0, 'specializationCode'=>1,
+        {'id'=>'1', 'course'=>2, 'formOfEducation'=>'Evening', 'specializationCode'=>1,
          'curator'=>{'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1},
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>0, 'formationDate'=>'2002-12-20'}}
+         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}}
                                              )
     end
   end

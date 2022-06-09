@@ -2,36 +2,47 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Faculty queries' do
+RSpec.describe 'Lecture queries' do
   subject(:result) { QlSchema.execute(query) }
 
-  describe '#createFaculty' do
+  describe '#createLecture' do
+    let!(:group){ create(:group) }
+    let!(:subject){ create(:subject) }
+    let!(:lecturer){ create(:lecturer) }
+    let!(:lecture_time){ create(:lecture_time) }
     let(:query) { <<~GQL }
-      mutation createFaculty {
-       createFaculty(input:{name: "Biology", formationDate:"1990-03-21"}){
-         name,
-         formationDate,
+      mutation createLecture {
+       createLecture(input:{groupId: 1, subjectId: 1, lecturerId: 1, lectureTimeId: 1,
+        corpus: 2, weekday: Monday, auditorium: 100}){
+         corpus,
+         weekday,
+         auditorium,
+         group{ id },
+         subject{ id },
+         lecturer{ id },
+         lectureTime{ id }
          }
        }
     GQL
 
-    it 'creates one faculty' do
+    it 'creates one lecture' do
       data = result.dig('data')
       expect(data.count).to eq(1)
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'createFaculty')).to eq(
-                                                       { 'formationDate'=>'1990-03-21', 'name'=>'Biology' }
+      expect(result.dig('data', 'createLecture')).to eq(
+        {"createLecture"=>{"corpus"=>2, "weekday"=>"Monday", "auditorium"=>100,
+        "group"=>{"id"=>"1"}, "subject"=>{"id"=>"1"}, "lecturer"=>{"id"=>"1"}, "lectureTime"=>{"id"=>"1"}}}
                                                      )
     end
   end
 
-  describe '#updateFaculty' do
-    let!(:faculty) { create(:faculty) }
+  describe '#updateLecture' do
+    let!(:lecture) { create(:lecture) }
     let(:query) { <<~GQL }
-      mutation updateFaculty {
-       updateFaculty(input:{id: 1, name: "UpdatedFaculty", formationDate:"1990-03-21"}){
+      mutation updateLecture {
+       updateLecture(input:{id: 1, name: "UpdatedLecture", formationDate:"1990-03-21"}){
          id,
          name,
          formationDate,
@@ -39,21 +50,21 @@ RSpec.describe 'Faculty queries' do
        }
     GQL
 
-    it 'updates faculty' do
-      expect(faculty.id).to eq(1)
-      expect(faculty.name).to eq('faculty_1')
-      expect(faculty.formation_date.to_s).to eq('2002-12-20')
-      expect(result.dig('data', 'updateFaculty')).to eq(
-                                                       { 'id'=>'1', 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
+    it 'updates lecture' do
+      expect(lecture.id).to eq(1)
+      expect(lecture.name).to eq('lecture_1')
+      expect(lecture.formation_date.to_s).to eq('2002-12-20')
+      expect(result.dig('data', 'updateLecture')).to eq(
+                                                       { 'id'=>'1', 'formationDate'=>'1990-03-21', 'name'=>'UpdatedLecture'}
                                                      )
     end
   end
 
-  describe '#deleteFaculty' do
-    let!(:faculty) { create(:faculty) }
+  describe '#deleteLecture' do
+    let!(:lecture) { create(:lecture) }
     let(:query) { <<~GQL }
-      mutation deleteFaculty {
-        deleteFaculty(input: {id: 1}) {
+      mutation deleteLecture {
+        deleteLecture(input: {id: 1}) {
           id
           name
           formationDate
@@ -61,13 +72,13 @@ RSpec.describe 'Faculty queries' do
       }
     GQL
 
-    it 'deletes faculty' do
-      expect{ result }.to change { Faculty.count }.by(-1)
+    it 'deletes lecture' do
+      expect{ result }.to change { Lecture.count }.by(-1)
     end
 
-    it 'deletes correct faculty' do
-      expect(result.dig('data', 'deleteFaculty')).to eq(
-                                                       { 'id'=>'1', 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
+    it 'deletes correct lecture' do
+      expect(result.dig('data', 'deleteLecture')).to eq(
+                                                       { 'id'=>'1', 'formationDate'=>'2002-12-20', 'name'=>'lecture_1'}
                                                      )
     end
   end
