@@ -9,5 +9,10 @@ module Types
     # Default Pundit policy action used to authorise viewing a record
 
     global_id_field :id
+
+    # def id
+    #   QlSchema.id_from_object(object)
+    # end
+
   end
 end

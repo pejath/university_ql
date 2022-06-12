@@ -13,13 +13,13 @@ module Types
       ::Faculty.all
     end
 
-    field :faculty, Faculty, null: false do
-      argument :id, ID, required: true
-    end
-
-    def faculty(id:)
-      ::Faculty.find(id)
-    end
+    # field :faculty, Faculty, null: false do
+    #   argument :id, ID, required: true
+    # end
+    #
+    # def faculty(id:)
+    #   ::Faculty.find(id)
+    # end
 
     # department
     field :departments, [Department], null: false
@@ -27,12 +27,12 @@ module Types
       ::Department.all
     end
 
-    field :department, Department, null: false do
-      argument :id, ID, required: true
-    end
-    def department(id:)
-      ::Department.find(id)
-    end
+    # field :department, Department, null: false do
+    #   argument :id, ID, required: true
+    # end
+    # def department(id:)
+    #   ::Department.find(id)
+    # end
 
     # lecturer
     field :lecturers, [Lecturer], null: false
@@ -40,12 +40,12 @@ module Types
       ::Lecturer.all
     end
 
-    field :lecturer, Lecturer, null: false do
-      argument :id, ID, required: true
-    end
-    def lecturer(id:)
-      ::Lecturer.find(id)
-    end
+    # field :lecturer, Lecturer, null: false do
+    #   argument :id, ID, required: true
+    # end
+    # def lecturer(id:)
+    #   ::Lecturer.find(id)
+    # end
 
     # lecture
     field :lectures, [Lecture], null: false
@@ -53,12 +53,12 @@ module Types
       ::Lecture.all
     end
 
-    field :lecture, Lecture, null: false do
-      argument :id, ID, required: true
-    end
-    def lecture(id:)
-      ::Lecture.find(id)
-    end
+    # field :lecture, Lecture, null: false do
+    #   argument :id, ID, required: true
+    # end
+    # def lecture(id:)
+    #   ::Lecture.find(id)
+    # end
 
     # student
     field :students, [Student], null: false
@@ -66,12 +66,12 @@ module Types
       ::Student.all
     end
 
-    field :student, Student, null: false do
-      argument :id, ID, required: true
-    end
-    def student(id:)
-      ::Student.find(id)
-    end
+    # field :student, Student, null: false do
+    #   argument :id, ID, required: true
+    # end
+    # def student(id:)
+    #   ::Student.find(id)
+    # end
 
     # subject
     field :subjects, [Subject], null: false
@@ -79,12 +79,12 @@ module Types
       ::Subject.all
     end
 
-    field :subject, Subject, null: false do
-      argument :id, ID, required: true
-    end
-    def subject(id:)
-      ::Subject.find(id)
-    end
+    # field :subject, Subject, null: false do
+    #   argument :id, ID, required: true
+    # end
+    # def subject(id:)
+    #   ::Subject.find(id)
+    # end
 
     # group
     field :groups, [Group], null: false
@@ -92,12 +92,12 @@ module Types
       ::Group.order(:department_id)
     end
 
-    field :group, Group, null: false do
-      argument :id, ID, required: true
-    end
-    def group(id:)
-      ::Group.order(:department_id).find(id)
-    end
+    # field :group, Group, null: false do
+    #   argument :id, ID, required: true
+    # end
+    # def group(id:)
+    #   ::Group.order(:department_id).find(id)
+    # end
 
 
     field :lecture_time, [LectureTime], null: false

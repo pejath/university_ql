@@ -24,8 +24,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'graphql'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
+gem 'hashid-rails', '~> 1.4', '>= 1.4.1'
+gem 'hashids', '~> 1.0', '>= 1.0.6'
 gem 'urn', '~> 2.0'
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 

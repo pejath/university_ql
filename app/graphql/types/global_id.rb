@@ -17,7 +17,7 @@ module Types
         # If the input is a String, assume it was manually converted to a GlobalID
         return object if object.is_a?(::String)
 
-        context.schema.id_from_object(object, nil, context)
+        context.schema.id_from_object(object)
       end
     end
   end
