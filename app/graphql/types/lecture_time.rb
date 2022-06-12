@@ -2,7 +2,6 @@
 
 module Types
   class LectureTime < Types::BaseObject
-
     implements Interfaces::Timestamps
 
     field :id, ID, null: false

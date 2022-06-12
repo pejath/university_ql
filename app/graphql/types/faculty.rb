@@ -2,7 +2,6 @@
 
 module Types
   class Faculty < Types::BaseObject
-
     implements Interfaces::Timestamps
 
     field :id, ID, null: false

@@ -8,7 +8,6 @@ module Types
   end
 
   class Department < Types::BaseObject
-
     implements Interfaces::Timestamps
 
     field :id, ID, null: false
