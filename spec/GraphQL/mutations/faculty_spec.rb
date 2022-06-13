@@ -3,17 +3,24 @@
 require 'rails_helper'
 
 RSpec.describe 'Faculty queries' do
-  subject(:result) { QlSchema.execute(query) }
+  subject(:result) { execute_query(query, variables: variables) }
+  let(:variables) {{}}
 
   describe '#createFaculty' do
     let(:query) { <<~GQL }
-      mutation createFaculty {
-       createFaculty(input:{name: "Biology", formationDate:"1990-03-21"}){
+      mutation createFaculty($input: CreateFacultyInput!) {
+       createFaculty(input: $input){
          name,
          formationDate,
          }
        }
     GQL
+
+    let(:variables) {
+      { "input" => {
+        "name": "Biology",
+        "formationDate":"1990-03-21"
+      }}}
 
     it 'creates one faculty' do
       data = result.dig('data')
@@ -30,14 +37,21 @@ RSpec.describe 'Faculty queries' do
   describe '#updateFaculty' do
     let!(:faculty) { create(:faculty) }
     let(:query) { <<~GQL }
-      mutation updateFaculty {
-       updateFaculty(input:{id: 1, name: "UpdatedFaculty", formationDate:"1990-03-21"}){
+      mutation updateFaculty($input: UpdateFacultyInput!) {
+       updateFaculty(input: $input){
          id,
          name,
          formationDate,
          }
        }
     GQL
+
+    let(:variables) {
+      { "input" => {
+        "id": "1",
+        "name": "UpdatedFaculty",
+        "formationDate":"1990-03-21"
+      }}}
 
     it 'updates faculty' do
       expect(faculty.id).to eq(1)
@@ -52,14 +66,19 @@ RSpec.describe 'Faculty queries' do
   describe '#deleteFaculty' do
     let!(:faculty) { create(:faculty) }
     let(:query) { <<~GQL }
-      mutation deleteFaculty {
-        deleteFaculty(input: {id: 1}) {
+      mutation deleteFaculty($input: DeleteFacultyInput!) {
+        deleteFaculty(input: $input) {
           id
           name
           formationDate
         }
       }
     GQL
+
+    let(:variables) {
+      { "input" => {
+        "id": 1
+      }}}
 
     it 'deletes faculty' do
       expect{ result }.to change { Faculty.count }.by(-1)

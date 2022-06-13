@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 module Types
-  class FormOfEducation < Types::BaseEnum
-    value 'Evening', value: 'evening'
-    value 'Correspondence', value: 'correspondence'
-    value 'Full_time', value: 'full_time'
-  end
-
   class Group < Types::BaseObject
     field :id, ID, null: false
     field :course, Integer, null: false
