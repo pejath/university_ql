@@ -2,6 +2,12 @@
 
 module Types
   class Group < Types::BaseObject
+    class FormOfEducation < BaseEnum
+      value 'EVENING', value: 'evening'
+      value 'CORRESPONDENCE', value: 'correspondence'
+      value 'FULL_TIME', value: 'full_time'
+    end
+
     field :id, ID, null: false
     field :course, Integer, null: false
     field :specialization_code, Integer, null: false

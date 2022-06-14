@@ -73,7 +73,7 @@ RSpec.describe 'Group queries' do
       }
     GQL
 
-    let(:variables) {{"id": "1"}}
+    let(:variables) { {"id": group.id} }
 
     it 'returns one group' do
       data = result.dig('data')

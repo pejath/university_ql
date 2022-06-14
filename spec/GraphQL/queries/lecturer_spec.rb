@@ -58,7 +58,7 @@ RSpec.describe 'Lecturer queries' do
       }
     GQL
 
-    let(:variables) {{"id": "1"}}
+    let(:variables) {{"id": lecturer.id}}
 
     it 'returns one lecturer' do
       data = result.dig('data')

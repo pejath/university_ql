@@ -31,21 +31,21 @@ RSpec.describe 'Group queries' do
       }}}
 
     it 'creates one group' do
-      data = result.dig('data')
-      expect(data.count).to eq(1)
+      expect { result }.to(change(Group, :count).by(1))
     end
 
     it 'returns correct data' do
       expect(result.dig('data', 'createGroup')).to eq(
         {'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>223,
-        'curator'=>{'id'=>'1'}, 'department'=>{'id'=>'2'}}
+        'curator'=>{'id'=>lecturer.id.to_s}, 'department'=>{'id'=>department.id.to_s}}
                                                    )
     end
   end
 
   describe '#updateGroup' do
     let!(:group) { create(:group, course: 3) }
-    let!(:lecturer) { create(:lecturer) }
+    let(:department) { create(:department) }
+    let(:lecturer) { create(:lecturer) }
 
     let(:query) { <<~GQL }
       mutation updateGroup($input: UpdateGroupInput!) {
@@ -61,23 +61,22 @@ RSpec.describe 'Group queries' do
 
     let(:variables) {
       { "input" => {
-        "id": 1,
-        "curatorId": 2,
-        "departmentId": 1,
+        "id": group.id,
+        "curatorId": lecturer.id,
+        "departmentId": department.id,
         "course": 2,
         "specializationCode": 223,
         "formOfEducation": "CORRESPONDENCE"
       }}}
 
     it 'updates group' do
-      expect(group.id).to eq(1)
-      expect(group.curator_id).to eq(1)
-      expect(group.department_id).to eq(2)
+      expect(group.curator_id).not_to eq(lecturer.id)
+      expect(group.department_id).not_to eq(department.id)
       expect(group.form_of_education).to eq('evening')
       expect(group.specialization_code).to eq(1)
       expect(result.dig('data', 'updateGroup')).to eq(
         {'course'=>2, 'formOfEducation'=>'CORRESPONDENCE', 'specializationCode'=>223,
-        'curator'=>{'id'=>'2'}, 'department'=>{'id'=>'1'}}
+        'curator'=>{'id'=>lecturer.id.to_s}, 'department'=>{'id'=>department.id.to_s}}
                                                      )
     end
   end
@@ -99,7 +98,7 @@ RSpec.describe 'Group queries' do
 
     let(:variables) {
       { "input" => {
-        "id": 1
+        "id": group.id
       }}}
 
     it 'deletes group' do
@@ -108,8 +107,8 @@ RSpec.describe 'Group queries' do
 
     it 'deletes correct group' do
       expect(result.dig('data', 'deleteGroup')).to eq(
-        { 'id'=>'1','course'=>1, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
-        'curator'=>{'id'=>'1'}, 'department'=>{'id'=>'2'} }
+        { 'id'=>group.id.to_s,'course'=>1, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
+        'curator'=>{'id'=>group.curator.id.to_s}, 'department'=>{'id'=>group.department.id.to_s} }
                                                      )
     end
   end

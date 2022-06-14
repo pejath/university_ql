@@ -8,7 +8,7 @@ module Mutations
 
     def resolve(id:, name:, group_id:)
       student = Student.find(id)
-      student.create(
+      student.update(
         name: name,
         group_id: group_id
       )

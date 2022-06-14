@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Faculty queries' do
   subject(:result) { execute_query(query, variables: variables) }
-  let(:variables) {{}}
+  let(:variables) { {} }
 
   describe '#createFaculty' do
     let(:query) { <<~GQL }
@@ -23,8 +23,7 @@ RSpec.describe 'Faculty queries' do
       }}}
 
     it 'creates one faculty' do
-      data = result.dig('data')
-      expect(data.count).to eq(1)
+      expect { result }.to(change(Faculty, :count).by(1))
     end
 
     it 'returns correct data' do
@@ -48,17 +47,17 @@ RSpec.describe 'Faculty queries' do
 
     let(:variables) {
       { "input" => {
-        "id": "1",
+        "id": faculty.id,
         "name": "UpdatedFaculty",
         "formationDate":"1990-03-21"
       }}}
 
     it 'updates faculty' do
-      expect(faculty.id).to eq(1)
+      expect(faculty.id).to eq(faculty.id)
       expect(faculty.name).to eq('faculty_1')
       expect(faculty.formation_date.to_s).to eq('2002-12-20')
       expect(result.dig('data', 'updateFaculty')).to eq(
-        { 'id'=>'1', 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
+        { 'id'=>faculty.id.to_s, 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
                                                      )
     end
   end
@@ -77,7 +76,7 @@ RSpec.describe 'Faculty queries' do
 
     let(:variables) {
       { "input" => {
-        "id": 1
+        "id": faculty.id
       }}}
 
     it 'deletes faculty' do
@@ -86,7 +85,7 @@ RSpec.describe 'Faculty queries' do
 
     it 'deletes correct faculty' do
       expect(result.dig('data', 'deleteFaculty')).to eq(
-        { 'id'=>'1', 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
+        { 'id'=>faculty.id.to_s, 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
                                                      )
     end
   end

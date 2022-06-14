@@ -57,12 +57,7 @@ RSpec.describe 'Department queries' do
       }
     GQL
 
-    let(:variables) {{"id": "1"}}
-
-    let(:variables) {
-      {
-        "id": 1
-      }}
+    let(:variables) { {"id": department.id} }
 
     it 'returns one department' do
       data = result.dig('data')

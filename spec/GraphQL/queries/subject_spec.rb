@@ -41,7 +41,7 @@ RSpec.describe 'Subject queries' do
       }
     GQL
 
-    let(:variables) {{"id": "1"}}
+    let(:variables) {{"id": subject.id}}
 
     it 'returns one subject' do
       data = result.dig('data')

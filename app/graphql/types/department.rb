@@ -2,6 +2,12 @@
 
 module Types
   class Department < Types::BaseObject
+    class DepartmentTypes < BaseEnum
+      value 'INTERFACULT', value: 'Interfacult'
+      value 'BASIC', value: 'Basic'
+      value 'MILITARY', value: 'Military'
+    end
+
     field :id, ID, null: false
     field :name, String, null: false
     field :department_type, DepartmentTypes, null: false

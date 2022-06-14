@@ -37,20 +37,23 @@ RSpec.describe 'Lecture queries' do
       }}}
 
     it 'creates one lecture' do
-      data = result.dig('data')
-      expect(data.count).to eq(1)
+      expect { result }.to(change(Lecture, :count).by(1))
     end
 
     it 'returns correct data' do
       expect(result.dig('data', 'createLecture')).to eq(
         {"corpus"=>2, "weekday"=>"MONDAY", "auditorium"=>100,
-        "group"=>{"id"=>"1"}, "subject"=>{"id"=>"1"}, "lecturer"=>{"id"=>"2"}, "lectureTime"=>{"id"=>"1"}}
+        "group"=>{"id"=>group.id.to_s}, "subject"=>{"id"=>subject.id.to_s}, "lecturer"=>{"id"=>lecturer.id.to_s}, "lectureTime"=>{"id"=>lecture_time.id.to_s}}
                                                      )
     end
   end
 
   describe '#updateLecture' do
     let!(:lecture) { create(:lecture) }
+    let(:group) { create(:group) }
+    let(:subject) { create(:subject) }
+    let(:lecturer) { create(:lecturer) }
+    let(:lecture_time) { create(:lecture_time) }
     let(:query) { <<~GQL }
       mutation updateLecture($input: UpdateLectureInput!) {
        updateLecture(input: $input){
@@ -67,11 +70,11 @@ RSpec.describe 'Lecture queries' do
 
     let(:variables) {
       { "input" => {
-        "id": 1,
-        "groupId": 1,
-        "subjectId": 1,
-        "lecturerId": 1,
-        "lectureTimeId": 1,
+        "id": lecture.id,
+        "groupId": group.id,
+        "subjectId": subject.id,
+        "lecturerId": lecturer.id,
+        "lectureTimeId": lecture_time.id,
         "corpus": 3,
         "weekday": "TUESDAY",
         "auditorium": 101
@@ -81,7 +84,7 @@ RSpec.describe 'Lecture queries' do
       expect(lecture.id).to eq(1)
       expect(result.dig('data', 'updateLecture')).to eq(
         {"corpus"=>3, "weekday"=>"TUESDAY", "auditorium"=>101,
-        "group"=>{"id"=>"1"}, "subject"=>{"id"=>"1"}, "lecturer"=>{"id"=>"1"}, "lectureTime"=>{"id"=>"1"}}
+        "group"=>{"id"=>group.id.to_s}, "subject"=>{"id"=>subject.id.to_s}, "lecturer"=>{"id"=>lecturer.id.to_s}, "lectureTime"=>{"id"=>lecture_time.id.to_s}}
                                                      )
     end
   end
@@ -104,7 +107,7 @@ RSpec.describe 'Lecture queries' do
 
     let(:variables) {
       { "input" => {
-        "id": 1
+        "id": lecture.id
       }}}
 
     it 'deletes lecture' do

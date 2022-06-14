@@ -30,8 +30,7 @@ RSpec.describe 'Department queries' do
     }}}
 
     it 'creates one department' do
-      data = result.dig('data')
-      expect(data.count).to eq(1)
+      expect { result }.to(change(Department, :count).by(1))
     end
 
     it 'returns correct data' do
@@ -42,7 +41,8 @@ RSpec.describe 'Department queries' do
   end
 
   describe '#updateDepartment' do
-    let!(:department) { create(:department) }
+    let(:department) { create(:department) }
+    let(:faculty) { create(:faculty) }
     let(:query) { <<~GQL }
       mutation updateDepartment($input: UpdateDepartmentInput!) {
        updateDepartment(input: $input){
@@ -59,11 +59,11 @@ RSpec.describe 'Department queries' do
 
     let(:variables) {
       { "input" => {
-        "id": "1",
+        "id": department.id,
         "name": "UpdatedDepartment",
         "departmentType": "MILITARY",
         "formationDate": "1990-03-21",
-        "facultyId": 1
+        "facultyId": faculty.id
       }}}
 
     it 'updates department' do
@@ -72,7 +72,7 @@ RSpec.describe 'Department queries' do
       expect(department.department_type).to eq('Basic')
       expect(department.formation_date.to_s).to eq('2002-12-20')
       expect(result.dig('data', 'updateDepartment')).to eq(
-        { 'id'=>'1','departmentType'=>'MILITARY', 'faculty'=>{'id'=>'1'}, 'formationDate'=>'1990-03-21', 'name'=>'UpdatedDepartment'}
+        { 'id'=>department.id.to_s,'departmentType'=>'MILITARY', 'faculty'=>{'id'=>faculty.id.to_s}, 'formationDate'=>'1990-03-21', 'name'=>'UpdatedDepartment'}
                                                         )
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe 'Department queries' do
 
     let(:variables) {
       { "input" => {
-        "id": "1"
+        "id": department.id.to_s
       }}}
 
     it 'deletes department' do
@@ -103,7 +103,7 @@ RSpec.describe 'Department queries' do
 
     it 'deletes correct department' do
       expect(result.dig('data', 'deleteDepartment')).to eq(
-        {'departmentType'=>'BASIC', 'faculty'=>{'id'=>'1'}, 'formationDate'=>'2002-12-20', 'name'=>'department_1'}
+        {'departmentType'=>'BASIC', 'faculty'=>{'id'=>department.faculty.id.to_s}, 'formationDate'=>'2002-12-20', 'name'=>'department_1'}
                                                         )
     end
   end
