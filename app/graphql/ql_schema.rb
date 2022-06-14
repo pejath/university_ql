@@ -54,7 +54,7 @@ class QlSchema < GraphQL::Schema
     scope = IdHasher.make_scope(entity_type)
     hashed_id = IdHasher.new.encode(type: scope, id: entity_id)
 
-    URN::Mazepay.new_hashed_id(scope, hashed_id).to_urn
+    URN::University.new_hashed_id(scope, hashed_id).to_urn
   end
 
   # Given a global ID (URN), decode the ID and create a new URN with the clear ID.
@@ -68,7 +68,7 @@ class QlSchema < GraphQL::Schema
 
     clear_id = clear_ids.fetch(0)
 
-    URN::Mazepay.new_clear_id(urn.entity_type, clear_id)
+    URN::University.new_clear_id(urn.entity_type, clear_id)
   rescue URN::ParseError => ex
     raise GraphQL::ExecutionError, ex.message
   end

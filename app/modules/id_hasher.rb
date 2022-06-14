@@ -12,14 +12,6 @@ class IdHasher
     end
   end
 
-  # def initialize(user_or_hashing_salt)
-  #   @hashing_salt = if user_or_hashing_salt.is_a?(::User)
-  #                     user_or_hashing_salt.account.hashing_salt
-  #                   else
-  #                     user_or_hashing_salt
-  #                   end
-  # end
-
   def encode(type:, id:)
     scope = self.class.make_scope(type)
     hashids(scope: scope).encode(id)
@@ -34,9 +26,7 @@ class IdHasher
   def hashids(scope:)
     # Including the type in the salt means a numeric ID won't be the same
     # for different types. e.g. User #1 and Account #1 have different IDs
-    # hashing_salt = "#{scope}.#{@hashing_salt}"
-    hashing_salt = "#{scope}"
 
-    Hashids.new(hashing_salt, MINIMUM_ID_HASH_LENGTH)
+    Hashids.new(scope.to_s, MINIMUM_ID_HASH_LENGTH)
   end
 end
