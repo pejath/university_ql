@@ -7,6 +7,9 @@ module Types
     field :formation_date, GraphQL::Types::ISO8601Date, null: false
 
     # has_many
-    field :departments, [Department], null: false
+    field :departments, [Department], null: true
+    def departments
+      defer_load_has_many(::Department, :department, object)
+    end
   end
 end
