@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Lecturer queries' do
-  subject(:result) { QlSchema.execute(query) }
+  subject(:result) { execute_query(query, variables: variables) }
+  let(:variables) {{}}
 
   describe '#lecturers' do
     let!(:lecturer) { FactoryBot.create_list(:lecturer, 2, name: 'Jason Padberg') }
@@ -31,10 +32,10 @@ RSpec.describe 'Lecturer queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'lecturers')).to eq([
         {'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-         'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}},
+         'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}},
 
         {'id'=>'2', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}}
+         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
                                                     ])
     end
   end
@@ -42,8 +43,8 @@ RSpec.describe 'Lecturer queries' do
   describe '#lecturer(id)' do
     let!(:lecturer) { create(:lecturer, name: 'Jason Padberg') }
     let(:query) { <<~GQL }
-      query Lecturer{
-        lecturer(id: 1){
+      query Lecturer($id: ID!){
+        lecturer(id: $id){
           id,
           name,
           academicDegree,
@@ -57,6 +58,8 @@ RSpec.describe 'Lecturer queries' do
       }
     GQL
 
+    let(:variables) {{"id": lecturer.id}}
+
     it 'returns one lecturer' do
       data = result.dig('data')
       expect(data.count).to eq(1)
@@ -65,7 +68,7 @@ RSpec.describe 'Lecturer queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'lecturer')).to eq(
         {'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-        'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'Basic', 'formationDate'=>'2002-12-20'}}
+        'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
                                                 )
     end
   end

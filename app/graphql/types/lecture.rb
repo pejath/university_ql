@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 module Types
-  class Weekday < Types::BaseEnum
-    value 'Monday', value: 'Monday'
-    value 'Tuesday', value: 'Tuesday'
-    value 'Wednesday', value: 'Wednesday'
-    value 'Thursday', value: 'Thursday'
-    value 'Friday', value: 'Friday'
-    value 'Saturday', value: 'Saturday'
-  end
-
   class Lecture < Types::BaseRecordObject
     field :corpus, Integer, null: false
     field :weekday, Weekday, null: false

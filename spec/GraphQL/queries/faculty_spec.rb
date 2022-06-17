@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Faculty queries' do
-  subject(:result) { QlSchema.execute(query) }
+  subject(:result) { execute_query(query, variables: variables) }
+  let(:variables) {{}}
 
   describe '#faculties' do
     let!(:faculties) { FactoryBot.create_list(:faculty, 2) }
@@ -33,14 +34,16 @@ RSpec.describe 'Faculty queries' do
   describe '#faculty(id)' do
     let!(:faculty) { create(:faculty) }
     let(:query) { <<~GQL }
-      query faculty{
-        faculty(id: 1){
+      query faculty($id: ID!){
+        faculty(id: $id){
           id,
           name,
           formationDate
         }
       }
     GQL
+
+    let(:variables) {{"id": faculty.id}}
 
     it 'returns one faculty' do
       data = result.dig('data')

@@ -7,17 +7,17 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
     # belongs_to
-    field :student, Student, null: true
+    field :student, Student, null: false
     def student
       defer_batch_load(::Student, object.student_id)
     end
 
-    field :subject, Subject, null: true
+    field :subject, Subject, null: false
     def subject
       defer_batch_load(::Subject, object.subject_id)
     end
 
-    field :lecturer, Lecturer, null: true
+    field :lecturer, Lecturer, null: false
     def lecturer
       defer_batch_load(::Lecturer, object.lecturer_id)
     end

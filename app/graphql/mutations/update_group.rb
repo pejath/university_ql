@@ -5,7 +5,7 @@ module Mutations
     argument :department_id, ID, required: true
     argument :course, Integer, required: true
     argument :specialization_code, Integer, required: true
-    argument :form_of_education, Types::FormOfEducation, required: true
+    argument :form_of_education, Types::Group::FormOfEducation, required: true
 
     type Types::Group
 

@@ -2,7 +2,7 @@ module Mutations
   class CreateDepartment < Mutations::BaseMutation
     argument :name, String, required: true
     argument :faculty_id, ID, required: true
-    argument :department_type, Types::DepartmentTypes, required: true
+    argument :department_type, Types::Department::DepartmentTypes, required: true
     argument :formation_date, GraphQL::Types::ISO8601Date, required: true
 
     type Types::Department
