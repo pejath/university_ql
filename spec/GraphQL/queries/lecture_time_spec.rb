@@ -25,8 +25,8 @@ RSpec.describe 'Lecture time query' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'lectureTime')).to eq([
-        {'id'=>'1', 'beginning'=> lecture_times[0][:beginning].time.to_s},
-        {'id'=>'2', 'beginning'=> lecture_times[1][:beginning].time.to_s}
+        {'id'=>make_global_id(lecture_times[0]), 'beginning'=> lecture_times[0][:beginning].time.to_s},
+        {'id'=>make_global_id(lecture_times[1]), 'beginning'=> lecture_times[1][:beginning].time.to_s}
                                                       ])
     end
   end

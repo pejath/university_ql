@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Student queries' do
   subject(:result) { execute_query(query, variables: variables) }
-  let(:variables) {{}}
+  let(:variables) { {} }
 
   describe '#students' do
     let!(:student) { FactoryBot.create_list(:student, 2, name: 'Robert') }
@@ -27,8 +27,8 @@ RSpec.describe 'Student queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'students')).to eq([
-        {'id'=>'1', 'name'=>'Robert', 'group'=>{'id'=>'1'}}, 
-        {'id'=>'2', 'name'=>'Robert', 'group'=>{'id'=>'2'}}
+        {'id'=>make_global_id(student[0]), 'name'=>'Robert', 'group'=>{'id'=>make_global_id(student[0].group)}},
+        {'id'=>make_global_id(student[1]), 'name'=>'Robert', 'group'=>{'id'=>make_global_id(student[1].group)}}
                                                     ])
     end
   end
@@ -37,17 +37,19 @@ RSpec.describe 'Student queries' do
     let!(:student) { create(:student, name: 'Jason') }
     let(:query) { <<~GQL }
       query Student($id: ID!){
-        student(id: $id){
-          id,
-          name,
-          group{
-            id
+        node(id: $id){
+          ... on Student{
+            id,
+            name,
+            group{
+              id
+            }
           }
         }
       }
     GQL
 
-    let(:variables) {{"id": student.id}}
+    let(:variables) {{"id": make_global_id(student)}}
 
     it 'returns one student' do
       data = result.dig('data')
@@ -55,8 +57,8 @@ RSpec.describe 'Student queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'student')).to eq(
-        {'id'=>'1', 'name'=>'Jason', 'group'=>{'id'=>'1'}}
+      expect(result.dig('data', 'node')).to eq(
+        {'id'=> make_global_id(student), 'name'=>'Jason', 'group'=>{'id'=> make_global_id(student.group)}}
                                                )
     end
   end

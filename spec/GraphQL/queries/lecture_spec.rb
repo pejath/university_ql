@@ -11,6 +11,7 @@ RSpec.describe 'Lecture queries' do
     let(:query) { <<~GQL }
         query allLectures{
         lectures{
+          id,
           weekday,
           corpus,
           auditorium,
@@ -36,10 +37,20 @@ RSpec.describe 'Lecture queries' do
     end
 
     it 'returns correct data' do
+
       expect(result.dig('data', 'lectures')).to eq([
-        {'weekday'=>'SATURDAY', 'corpus'=>1, 'auditorium'=>1, 'lectureTime'=>{'id'=>'1'}, 'group'=>{'id'=>'1'}, 'lecturer'=>{'id'=>'2'}, 'subject'=>{'id'=>'1'}},
-        {'weekday'=>'SATURDAY', 'corpus'=>2, 'auditorium'=>2, 'lectureTime'=>{'id'=>'2'}, 'group'=>{'id'=>'2'}, 'lecturer'=>{'id'=>'4'}, 'subject'=>{'id'=>'2'}}
-                                                    ])
+        {'id' => make_global_id(lectures[0]),'weekday' => 'SATURDAY', 'corpus' => 1, 'auditorium' => 1,
+         'lectureTime' => {'id' => make_global_id(lectures[0].lecture_time)},
+         'group' => {'id' => make_global_id(lectures[0].group)},
+         'lecturer' => {'id' => make_global_id(lectures[0].lecturer)},
+         'subject' => {'id' => make_global_id(lectures[0].subject)}},
+
+        {'id' => make_global_id(lectures[1]),'weekday' => 'SATURDAY', 'corpus' => 2, 'auditorium' => 2,
+         'lectureTime' => {'id' => make_global_id(lectures[1].lecture_time)},
+         'group' => {'id' => make_global_id(lectures[1].group)},
+         'lecturer' => {'id' => make_global_id(lectures[1].lecturer)},
+         'subject' => {'id' => make_global_id(lectures[1].subject)}}
+                                                   ])
     end
   end
 
@@ -47,7 +58,9 @@ RSpec.describe 'Lecture queries' do
     let!(:lecture) { create(:lecture, weekday: 'Monday') }
     let(:query) { <<~GQL }
       query Lecture($id: ID!){
-           lecture(id: $id){
+        node(id: $id){
+           ... on Lecture{
+             id,
              weekday,
              corpus,
              auditorium,
@@ -65,9 +78,10 @@ RSpec.describe 'Lecture queries' do
              }
            }
          }
+        }
     GQL
 
-    let(:variables) {{"id": lecture.id}}
+    let(:variables) {{"id": make_global_id(lecture)}}
 
     it 'returns one lecture' do
       data = result.dig('data')
@@ -75,8 +89,12 @@ RSpec.describe 'Lecture queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'lecture')).to eq(
-        {'weekday'=>'MONDAY', 'corpus'=>1, 'auditorium'=>1, 'lectureTime'=>{'id'=>'1'}, 'group'=>{'id'=>'1'}, 'lecturer'=>{'id'=>'2'}, 'subject'=>{'id'=>'1'}}
+      expect(result.dig('data', 'node')).to eq(
+        {'id' => make_global_id(lecture),'weekday' => 'MONDAY', 'corpus' => 1, 'auditorium' => 1,
+         'lectureTime' => {'id' => make_global_id(lecture.lecture_time) },
+         'group' => {'id' => make_global_id(lecture.group) },
+         'lecturer' => {'id' => make_global_id(lecture.lecturer) },
+         'subject' => {'id' => make_global_id(lecture.subject) } }
                                                )
     end
   end
