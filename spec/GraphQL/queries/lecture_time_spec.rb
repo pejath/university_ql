@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Lecture time query' do
-  subject(:result) { QlSchema.execute(query) }
+  subject(:result) { execute_query(query, variables: variables) }
+  let(:variables) {{}}
 
   describe '#lecture_time' do
     let!(:lecture_times) { FactoryBot.create_pair(:lecture_time) }

@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Lecture queries' do
-  subject(:result) { QlSchema.execute(query) }
+  subject(:result) { execute_query(query, variables: variables) }
+  let(:variables) {{}}
 
   describe '#createLecture' do
     let!(:group){ create(:group) }
@@ -11,9 +12,8 @@ RSpec.describe 'Lecture queries' do
     let!(:lecturer){ create(:lecturer) }
     let!(:lecture_time){ create(:lecture_time) }
     let(:query) { <<~GQL }
-      mutation createLecture {
-       createLecture(input:{groupId: 1, subjectId: 1, lecturerId: 1, lectureTimeId: 1,
-        corpus: 2, weekday: Monday, auditorium: 100}){
+      mutation createLecture($input: CreateLectureInput!) {
+       createLecture(input: $input){
          corpus,
          weekday,
          auditorium,
@@ -25,52 +25,90 @@ RSpec.describe 'Lecture queries' do
        }
     GQL
 
+    let(:variables) {
+      { "input" => {
+        "groupId": group.id,
+        "subjectId": subject.id,
+        "lecturerId": lecturer.id,
+        "lectureTimeId": lecture_time.id,
+        "corpus": 2,
+        "weekday": "MONDAY",
+        "auditorium": 100
+      }}}
+
     it 'creates one lecture' do
-      data = result.dig('data')
-      expect(data.count).to eq(1)
+      expect { result }.to(change(Lecture, :count).by(1))
     end
 
     it 'returns correct data' do
       expect(result.dig('data', 'createLecture')).to eq(
-        {"createLecture"=>{"corpus"=>2, "weekday"=>"Monday", "auditorium"=>100,
-        "group"=>{"id"=>"1"}, "subject"=>{"id"=>"1"}, "lecturer"=>{"id"=>"1"}, "lectureTime"=>{"id"=>"1"}}}
+        {"corpus"=>2, "weekday"=>"MONDAY", "auditorium"=>100,
+        "group"=>{"id"=>group.id.to_s}, "subject"=>{"id"=>subject.id.to_s}, "lecturer"=>{"id"=>lecturer.id.to_s}, "lectureTime"=>{"id"=>lecture_time.id.to_s}}
                                                      )
     end
   end
 
   describe '#updateLecture' do
     let!(:lecture) { create(:lecture) }
+    let(:group) { create(:group) }
+    let(:subject) { create(:subject) }
+    let(:lecturer) { create(:lecturer) }
+    let(:lecture_time) { create(:lecture_time) }
     let(:query) { <<~GQL }
-      mutation updateLecture {
-       updateLecture(input:{id: 1, name: "UpdatedLecture", formationDate:"1990-03-21"}){
-         id,
-         name,
-         formationDate,
+      mutation updateLecture($input: UpdateLectureInput!) {
+       updateLecture(input: $input){
+         corpus,
+         weekday,
+         auditorium,
+         group{ id },
+         subject{ id },
+         lecturer{ id },
+         lectureTime{ id }
          }
        }
     GQL
 
+    let(:variables) {
+      { "input" => {
+        "id": lecture.id,
+        "groupId": group.id,
+        "subjectId": subject.id,
+        "lecturerId": lecturer.id,
+        "lectureTimeId": lecture_time.id,
+        "corpus": 3,
+        "weekday": "TUESDAY",
+        "auditorium": 101
+      }}}
+
     it 'updates lecture' do
       expect(lecture.id).to eq(1)
-      expect(lecture.name).to eq('lecture_1')
-      expect(lecture.formation_date.to_s).to eq('2002-12-20')
       expect(result.dig('data', 'updateLecture')).to eq(
-                                                       { 'id'=>'1', 'formationDate'=>'1990-03-21', 'name'=>'UpdatedLecture'}
+        {"corpus"=>3, "weekday"=>"TUESDAY", "auditorium"=>101,
+        "group"=>{"id"=>group.id.to_s}, "subject"=>{"id"=>subject.id.to_s}, "lecturer"=>{"id"=>lecturer.id.to_s}, "lectureTime"=>{"id"=>lecture_time.id.to_s}}
                                                      )
     end
   end
 
   describe '#deleteLecture' do
-    let!(:lecture) { create(:lecture) }
+    let!(:lecture) { create(:lecture, weekday: "Tuesday") }
     let(:query) { <<~GQL }
-      mutation deleteLecture {
-        deleteLecture(input: {id: 1}) {
-          id
-          name
-          formationDate
+      mutation deleteLecture($input: DeleteLectureInput!) {
+        deleteLecture(input: $input) {
+         corpus,
+         weekday,
+         auditorium,
+         group{ id },
+         subject{ id },
+         lecturer{ id },
+         lectureTime{ id }
         }
       }
     GQL
+
+    let(:variables) {
+      { "input" => {
+        "id": lecture.id
+      }}}
 
     it 'deletes lecture' do
       expect{ result }.to change { Lecture.count }.by(-1)
@@ -78,7 +116,9 @@ RSpec.describe 'Lecture queries' do
 
     it 'deletes correct lecture' do
       expect(result.dig('data', 'deleteLecture')).to eq(
-                                                       { 'id'=>'1', 'formationDate'=>'2002-12-20', 'name'=>'lecture_1'}
+        "auditorium"=>1, "corpus"=>1, "group"=>{"id"=>"1"},
+        "lectureTime"=>{"id"=>"1"}, "lecturer"=>{"id"=>"2"},
+        "subject"=>{"id"=>"1"}, "weekday"=>"TUESDAY"
                                                      )
     end
   end

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Types
-  class FormOfEducation < Types::BaseEnum
-    value 'Evening', value: 'evening'
-    value 'Correspondence', value: 'correspondence'
-    value 'Full_time', value: 'full_time'
-  end
-
   class Group < Types::BaseObject
+    class FormOfEducation < BaseEnum
+      value 'EVENING', value: 'evening'
+      value 'CORRESPONDENCE', value: 'correspondence'
+      value 'FULL_TIME', value: 'full_time'
+    end
+
     implements Interfaces::Timestamps
 
     field :id, ID, null: false

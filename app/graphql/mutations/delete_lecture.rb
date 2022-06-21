@@ -5,7 +5,7 @@ module Mutations
     type Types::Lecture
 
     def resolve(id:)
-      lecture = Group.find(id)
+      lecture = Lecture.find(id)
       lecture.destroy!
     end
   end

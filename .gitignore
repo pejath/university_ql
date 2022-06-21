@@ -39,9 +39,5 @@
 yarn-debug.log*
 .yarn-integrity
 /.idea/
-/spec/support/graphql.rb
-/spec/GraphQL/queries/group_spec.rb
-/spec/GraphQL/queries/lecture_spec.rb
-/spec/GraphQL/queries/mark_spec.rb
-/spec/GraphQL/queries/student_spec.rb
-/spec/GraphQL/queries/subject_spec.rb
+
+

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Types
-  class DepartmentTypes < Types::BaseEnum
-    value 'Interfacult', value: 'Interfacult'
-    value 'Basic', value: 'Basic'
-    value 'Military', value: 'Military'
-  end
-
   class Department < Types::BaseObject
+    class DepartmentTypes < BaseEnum
+      value 'INTERFACULT', value: 'Interfacult'
+      value 'BASIC', value: 'Basic'
+      value 'MILITARY', value: 'Military'
+    end
+
     implements Interfaces::Timestamps
 
     field :id, ID, null: false

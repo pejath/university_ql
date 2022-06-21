@@ -16,6 +16,7 @@
 
 require 'database_cleaner/active_record'
 require 'support/database_cleaner'
+require 'support/graphql'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
