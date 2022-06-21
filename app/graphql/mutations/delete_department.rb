@@ -1,11 +1,11 @@
 module Mutations
   class DeleteDepartment < BaseMutation
-    argument :id, ID, required: true
+    argument :department_id, Types::GlobalId, required: true, loads: Types::Department
 
     type Types::Department
 
-    def resolve(id:)
-      department = Department.find(id)
+    def resolve(department:)
+      puts department
       department.destroy!
     end
   end
