@@ -24,8 +24,8 @@ RSpec.describe 'Subject queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'subjects')).to eq([
-        {'id'=>'1', 'name'=>'subject_1'},
-        {'id'=>'2', 'name'=>'subject_2'}
+        {'id'=>make_global_id(subject[0]), 'name'=>'subject_1'},
+        {'id'=>make_global_id(subject[1]), 'name'=>'subject_2'}
                                                    ])
     end
   end
@@ -34,14 +34,16 @@ RSpec.describe 'Subject queries' do
     let!(:subject) { create(:subject) }
     let(:query) { <<~GQL }
       query Subject($id: ID!){
-        subject(id: $id){
-          id,
-          name
+        node(id: $id){
+          ... on Subject{
+            id,
+            name
+          }
         }
       }
     GQL
 
-    let(:variables) {{"id": subject.id}}
+    let(:variables) {{"id":  make_global_id(subject)}}
 
     it 'returns one subject' do
       data = result.dig('data')
@@ -49,8 +51,8 @@ RSpec.describe 'Subject queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'subject')).to eq(
-        {'id'=>'1', 'name'=>'subject_1'}
+      expect(result.dig('data', 'node')).to eq(
+        {'id'=>make_global_id(subject), 'name'=>'subject_1'}
                                                )
     end
   end

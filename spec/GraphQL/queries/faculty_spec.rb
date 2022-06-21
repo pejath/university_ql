@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Faculty queries' do
   subject(:result) { execute_query(query, variables: variables) }
-  let(:variables) {{}}
+  let(:variables) { {} }
 
   describe '#faculties' do
     let!(:faculties) { FactoryBot.create_list(:faculty, 2) }
@@ -25,8 +25,8 @@ RSpec.describe 'Faculty queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'faculties')).to eq([
-        { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' },
-        { 'id' => '2', 'name' => 'faculty_2', 'formationDate' => '2002-12-20' }
+        { 'id' => make_global_id(faculties[0]), 'name' => 'faculty_1', 'formationDate' => '2002-12-20' },
+        { 'id' => make_global_id(faculties[1]), 'name' => 'faculty_2', 'formationDate' => '2002-12-20' }
                                                     ])
     end
   end
@@ -35,15 +35,17 @@ RSpec.describe 'Faculty queries' do
     let!(:faculty) { create(:faculty) }
     let(:query) { <<~GQL }
       query faculty($id: ID!){
-        faculty(id: $id){
-          id,
-          name,
-          formationDate
+        node(id: $id){
+          ... on Faculty{
+            id,
+            name,
+            formationDate
+          }
         }
       }
     GQL
 
-    let(:variables) {{"id": faculty.id}}
+    let(:variables) { { "id": make_global_id(faculty) } }
 
     it 'returns one faculty' do
       data = result.dig('data')
@@ -51,8 +53,8 @@ RSpec.describe 'Faculty queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'faculty')).to eq(
-        { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' }
+      expect(result.dig('data', 'node')).to eq(
+        { 'id' => make_global_id(faculty), 'name' => 'faculty_1', 'formationDate' => '2002-12-20' }
                                                )
     end
   end

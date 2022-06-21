@@ -1,16 +1,16 @@
 module Mutations
   class UpdateStudent < BaseMutation
-    argument :id, ID, required: true
+    argument :group_id, Types::GlobalId, required: true, loads: Types::Group
+    argument :student_id, Types::GlobalId, required: true, loads: Types::Student
+
     argument :name, String, required: true
-    argument :group_id, ID, required: true
 
     type Types::Student
 
-    def resolve(id:, name:, group_id:)
-      student = Student.find(id)
+    def resolve(group:, name:, student:)
       student.update(
         name: name,
-        group_id: group_id
+        group: group
       )
       student.reload
     end

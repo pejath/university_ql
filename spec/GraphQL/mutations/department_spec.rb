@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Department queries' do
+RSpec.describe 'Department mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) {{}}
 
@@ -26,7 +26,7 @@ RSpec.describe 'Department queries' do
       "name": "Biology",
       "departmentType": "INTERFACULT",
       "formationDate": "1990-03-21",
-      "facultyId": faculty.id
+      "facultyId": make_global_id(faculty)
     }}}
 
     it 'creates one department' do
@@ -35,7 +35,7 @@ RSpec.describe 'Department queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'createDepartment')).to eq(
-        {'departmentType'=>'INTERFACULT', 'faculty'=>{'id'=>'1'}, 'formationDate'=>'1990-03-21', 'name'=>'Biology'}
+        {'departmentType'=>'INTERFACULT', 'faculty'=>{'id'=>make_global_id(faculty)}, 'formationDate'=>'1990-03-21', 'name'=>'Biology'}
                                                         )
     end
   end
@@ -59,11 +59,11 @@ RSpec.describe 'Department queries' do
 
     let(:variables) {
       { "input" => {
-        "id": department.id,
+        "departmentId": make_global_id(department),
         "name": "UpdatedDepartment",
         "departmentType": "MILITARY",
         "formationDate": "1990-03-21",
-        "facultyId": faculty.id
+        "facultyId": make_global_id(faculty)
       }}}
 
     it 'updates department' do
@@ -72,7 +72,7 @@ RSpec.describe 'Department queries' do
       expect(department.department_type).to eq('Basic')
       expect(department.formation_date.to_s).to eq('2002-12-20')
       expect(result.dig('data', 'updateDepartment')).to eq(
-        { 'id'=>department.id.to_s,'departmentType'=>'MILITARY', 'faculty'=>{'id'=>faculty.id.to_s}, 'formationDate'=>'1990-03-21', 'name'=>'UpdatedDepartment'}
+        { 'id'=>make_global_id(department),'departmentType'=>'MILITARY', 'faculty'=>{'id'=>make_global_id(faculty)}, 'formationDate'=>'1990-03-21', 'name'=>'UpdatedDepartment'}
                                                         )
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe 'Department queries' do
 
     let(:variables) {
       { "input" => {
-        "id": department.id.to_s
+        "departmentId": make_global_id(department)
       }}}
 
     it 'deletes department' do
@@ -103,7 +103,7 @@ RSpec.describe 'Department queries' do
 
     it 'deletes correct department' do
       expect(result.dig('data', 'deleteDepartment')).to eq(
-        {'departmentType'=>'BASIC', 'faculty'=>{'id'=>department.faculty.id.to_s}, 'formationDate'=>'2002-12-20', 'name'=>'department_1'}
+        {'departmentType'=>'BASIC', 'faculty'=>{'id'=>make_global_id(department.faculty)}, 'formationDate'=>'2002-12-20', 'name'=>'department_1'}
                                                         )
     end
   end

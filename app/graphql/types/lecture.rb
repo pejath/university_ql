@@ -4,7 +4,6 @@ module Types
   class Lecture < Types::BaseObject
     implements Interfaces::Timestamps
 
-    field :id, ID, null: false
     field :corpus, Integer, null: false
     field :weekday, Weekday, null: false
     field :auditorium, Integer, null: false

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Lecturer queries' do
+RSpec.describe 'Lecturer mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) { {} }
 
@@ -22,7 +22,7 @@ RSpec.describe 'Lecturer queries' do
       { "input" => {
         "name": "Jason",
         "academicDegree": 2,
-        "departmentId": department.id
+        "departmentId": make_global_id(department)
       }}}
 
     it 'creates one lecturer' do
@@ -31,7 +31,7 @@ RSpec.describe 'Lecturer queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'createLecturer')).to eq(
-        { "name"=>"Jason", "academicDegree"=>2, "department"=>{"id"=>department.id.to_s} }
+        { "name"=>"Jason", "academicDegree"=>2, "department"=>{"id"=>make_global_id(department)} }
                                                       )
     end
   end
@@ -52,9 +52,9 @@ RSpec.describe 'Lecturer queries' do
 
     let(:variables) {
       { "input" => {
-        "id": lecturer.id,
+        "lecturerId": make_global_id(lecturer),
         "name": "Statham",
-        "departmentId": department.id,
+        "departmentId": make_global_id(department),
         "academicDegree": 3
       }}}
 
@@ -63,7 +63,7 @@ RSpec.describe 'Lecturer queries' do
       expect(lecturer.name).not_to eq('Statham')
       expect(lecturer.academic_degree.to_s).to eq('1')
       expect(result.dig('data', 'updateLecturer')).to eq(
-        { "id"=>lecturer.id.to_s,"name"=>"Statham", "academicDegree"=> 3, "department"=>{"id"=>department.id.to_s} }
+        { "id"=>make_global_id(lecturer),"name"=>"Statham", "academicDegree"=> 3, "department"=>{"id"=>make_global_id(department)} }
                                                       )
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe 'Lecturer queries' do
 
     let(:variables) {
       { "input" => {
-        "id": lecturer.id
+        "lecturerId": make_global_id(lecturer)
       }}}
 
     it 'deletes lecturer' do
@@ -92,7 +92,7 @@ RSpec.describe 'Lecturer queries' do
 
     it 'deletes correct lecturer' do
       expect(result.dig('data', 'deleteLecturer')).to eq(
-        { 'id'=>'1', 'department'=> {'id'=>'1'}, 'academicDegree'=>1, 'name'=>lecturer.name}
+        { 'id'=>make_global_id(lecturer), 'department'=> {'id'=>make_global_id(lecturer.department)}, 'academicDegree'=>1, 'name'=>lecturer.name}
                                                      )
     end
   end

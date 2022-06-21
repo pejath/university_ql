@@ -1,11 +1,10 @@
 module Mutations
   class DeleteGroup < BaseMutation
-    argument :id, ID, required: true
+    argument :group_id, Types::GlobalId, required: true, loads: Types::Group
 
     type Types::Group
 
-    def resolve(id:)
-      group = Group.find(id)
+    def resolve(group:)
       group.destroy!
     end
   end

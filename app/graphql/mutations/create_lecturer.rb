@@ -1,15 +1,16 @@
 module Mutations
   class CreateLecturer < BaseMutation
-    argument :department_id, ID, required: true
+    argument :department_id, Types::GlobalId, required: true, loads: Types::Department
+
     argument :name, String, required: true
     argument :academic_degree, Integer, required: true
 
     type Types::Lecturer
 
-    def resolve(department_id:, name:, academic_degree:)
+    def resolve(department:, name:, academic_degree:)
       Lecturer.create(
         name: name,
-        department_id: department_id,
+        department: department,
         academic_degree: academic_degree
       )
     end

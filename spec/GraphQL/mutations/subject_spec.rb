@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Subject queries' do
+RSpec.describe 'Subject mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) {{}}
 
@@ -44,7 +44,7 @@ RSpec.describe 'Subject queries' do
 
     let(:variables) {
       { "input" => {
-        "id": subject.id,
+        "subjectId": make_global_id(subject),
         "name": "Math"
       }}}
 
@@ -52,7 +52,7 @@ RSpec.describe 'Subject queries' do
       expect(subject.id).to eq(1)
       expect(subject.name).to eq('subject_1')
       expect(result.dig('data', 'updateSubject')).to eq(
-        { 'id'=>subject.id.to_s, 'name'=>'Math' }
+        { 'id'=>make_global_id(subject), 'name'=>'Math' }
                                                      )
     end
   end
@@ -70,7 +70,7 @@ RSpec.describe 'Subject queries' do
 
     let(:variables) {
       { "input" => {
-        "id": subject.id
+        "subjectId": make_global_id(subject)
       }}}
 
     it 'deletes subject' do
@@ -79,7 +79,7 @@ RSpec.describe 'Subject queries' do
 
     it 'deletes correct subject' do
       expect(result.dig('data', 'deleteSubject')).to eq(
-        { 'id'=>subject.id.to_s, 'name'=>'subject_1' }
+        { 'id'=>make_global_id(subject), 'name'=>'subject_1' }
                                                      )
     end
   end

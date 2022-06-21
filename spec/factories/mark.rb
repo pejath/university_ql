@@ -5,7 +5,7 @@ FactoryBot.define do
     association :subject, factory: :subject
     association :lecturer, factory: :lecturer
 
-    mark { rand(1..5) }
+    mark { 1 }
   end
 
 end

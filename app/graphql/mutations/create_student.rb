@@ -1,14 +1,15 @@
 module Mutations
   class CreateStudent < BaseMutation
+    argument :group_id, Types::GlobalId, required: true, loads: Types::Group
+
     argument :name, String, required: true
-    argument :group_id, ID, required: true
 
     type Types::Student
 
-    def resolve(name:, group_id:)
+    def resolve(name:, group:)
       Student.create(
         name: name,
-        group_id: group_id
+        group: group
       )
     end
   end

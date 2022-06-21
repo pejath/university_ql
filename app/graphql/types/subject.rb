@@ -4,7 +4,6 @@ module Types
   class Subject < Types::BaseObject
     implements Interfaces::Timestamps
 
-    field :id, ID, null: false
     field :name, String, null: false
 
     # has_many

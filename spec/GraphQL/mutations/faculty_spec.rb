@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Faculty queries' do
+RSpec.describe 'Faculty mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) { {} }
 
@@ -47,17 +47,16 @@ RSpec.describe 'Faculty queries' do
 
     let(:variables) {
       { "input" => {
-        "id": faculty.id,
+        "facultyId": make_global_id(faculty),
         "name": "UpdatedFaculty",
         "formationDate":"1990-03-21"
       }}}
 
     it 'updates faculty' do
-      expect(faculty.id).to eq(faculty.id)
       expect(faculty.name).to eq('faculty_1')
       expect(faculty.formation_date.to_s).to eq('2002-12-20')
       expect(result.dig('data', 'updateFaculty')).to eq(
-        { 'id'=>faculty.id.to_s, 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
+        { 'id'=>make_global_id(faculty), 'formationDate'=>'1990-03-21', 'name'=>'UpdatedFaculty'}
                                                      )
     end
   end
@@ -76,7 +75,7 @@ RSpec.describe 'Faculty queries' do
 
     let(:variables) {
       { "input" => {
-        "id": faculty.id
+        "facultyId": make_global_id(faculty)
       }}}
 
     it 'deletes faculty' do
@@ -85,7 +84,7 @@ RSpec.describe 'Faculty queries' do
 
     it 'deletes correct faculty' do
       expect(result.dig('data', 'deleteFaculty')).to eq(
-        { 'id'=>faculty.id.to_s, 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
+        { 'id'=>make_global_id(faculty), 'formationDate'=>'2002-12-20', 'name'=>'faculty_1'}
                                                      )
     end
   end

@@ -1,11 +1,10 @@
 module Mutations
   class DeleteSubject < BaseMutation
-    argument :id, ID, required: true
+    argument :subject_id, Types::GlobalId, required: true, loads: Types::Subject
 
     type Types::Subject
 
-    def resolve(id:)
-      subject = Subject.find(id)
+    def resolve(subject:)
       subject.destroy!
     end
   end

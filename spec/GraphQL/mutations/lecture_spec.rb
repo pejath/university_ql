@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Lecture queries' do
+RSpec.describe 'Lecture mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) {{}}
 
@@ -27,10 +27,10 @@ RSpec.describe 'Lecture queries' do
 
     let(:variables) {
       { "input" => {
-        "groupId": group.id,
-        "subjectId": subject.id,
-        "lecturerId": lecturer.id,
-        "lectureTimeId": lecture_time.id,
+        "groupId": make_global_id(group),
+        "subjectId": make_global_id(subject),
+        "lecturerId": make_global_id(lecturer),
+        "lectureTimeId": make_global_id(lecture_time),
         "corpus": 2,
         "weekday": "MONDAY",
         "auditorium": 100
@@ -43,7 +43,8 @@ RSpec.describe 'Lecture queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'createLecture')).to eq(
         {"corpus"=>2, "weekday"=>"MONDAY", "auditorium"=>100,
-        "group"=>{"id"=>group.id.to_s}, "subject"=>{"id"=>subject.id.to_s}, "lecturer"=>{"id"=>lecturer.id.to_s}, "lectureTime"=>{"id"=>lecture_time.id.to_s}}
+        "group"=>{"id"=>make_global_id(group)}, "subject"=>{"id"=>make_global_id(subject)}, "lecturer"=>{"id"=>make_global_id(lecturer)},
+         "lectureTime"=>{"id"=>make_global_id(lecture_time)}}
                                                      )
     end
   end
@@ -70,11 +71,11 @@ RSpec.describe 'Lecture queries' do
 
     let(:variables) {
       { "input" => {
-        "id": lecture.id,
-        "groupId": group.id,
-        "subjectId": subject.id,
-        "lecturerId": lecturer.id,
-        "lectureTimeId": lecture_time.id,
+        "lectureId": make_global_id(lecture),
+        "groupId": make_global_id(group),
+        "subjectId": make_global_id(subject),
+        "lecturerId": make_global_id(lecturer),
+        "lectureTimeId": make_global_id(lecture_time),
         "corpus": 3,
         "weekday": "TUESDAY",
         "auditorium": 101
@@ -84,7 +85,8 @@ RSpec.describe 'Lecture queries' do
       expect(lecture.id).to eq(1)
       expect(result.dig('data', 'updateLecture')).to eq(
         {"corpus"=>3, "weekday"=>"TUESDAY", "auditorium"=>101,
-        "group"=>{"id"=>group.id.to_s}, "subject"=>{"id"=>subject.id.to_s}, "lecturer"=>{"id"=>lecturer.id.to_s}, "lectureTime"=>{"id"=>lecture_time.id.to_s}}
+        "group"=>{"id"=>make_global_id(group)}, "subject"=>{"id"=>make_global_id(subject)},
+        "lecturer"=>{"id"=>make_global_id(lecturer)}, "lectureTime"=>{"id"=>make_global_id(lecture_time)}}
                                                      )
     end
   end
@@ -107,7 +109,7 @@ RSpec.describe 'Lecture queries' do
 
     let(:variables) {
       { "input" => {
-        "id": lecture.id
+        "lectureId": make_global_id(lecture)
       }}}
 
     it 'deletes lecture' do
@@ -116,9 +118,9 @@ RSpec.describe 'Lecture queries' do
 
     it 'deletes correct lecture' do
       expect(result.dig('data', 'deleteLecture')).to eq(
-        "auditorium"=>1, "corpus"=>1, "group"=>{"id"=>"1"},
-        "lectureTime"=>{"id"=>"1"}, "lecturer"=>{"id"=>"2"},
-        "subject"=>{"id"=>"1"}, "weekday"=>"TUESDAY"
+        "auditorium"=>1, "corpus"=>1, "group"=>{"id"=>make_global_id(lecture.group)},
+        "lectureTime"=>{"id"=>make_global_id(lecture.lecture_time)}, "lecturer"=>{"id"=>make_global_id(lecture.lecturer)},
+        "subject"=>{"id"=>make_global_id(lecture.subject)}, "weekday"=>"TUESDAY"
                                                      )
     end
   end

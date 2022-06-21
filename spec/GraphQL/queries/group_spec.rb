@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Group queries' do
   subject(:result) { execute_query(query, variables: variables) }
-  let(:variables) {{}}
+  let(:variables) { {} }
 
   describe '#groups' do
     let!(:group1) { FactoryBot.create(:group, course: 2, curator: create(:lecturer, name: 'Jason Padberg')) }
@@ -39,13 +39,13 @@ RSpec.describe 'Group queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'groups')).to eq([
-        {'id'=>'1', 'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
-         'curator'=>{'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1},
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}},
+        {'id'=>make_global_id(group1), 'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
+         'curator'=>{'id'=>make_global_id(group1.curator), 'name'=>'Jason Padberg', 'academicDegree'=>1},
+         'department'=>{'id'=>make_global_id(group1.department), 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}},
 
-        {'id'=>'2', 'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>2,
-         'curator'=>{'id'=>'2', 'name'=>'Jason Padberg', 'academicDegree'=>1},
-         'department'=>{'id'=>'4', 'name'=>'department_4', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}])
+        {'id'=>make_global_id(group2), 'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>2,
+         'curator'=>{'id'=>make_global_id(group2.curator), 'name'=>'Jason Padberg', 'academicDegree'=>1},
+         'department'=>{ 'id'=>make_global_id(group2.department), 'name'=>'department_4', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}])
     end
   end
 
@@ -53,27 +53,27 @@ RSpec.describe 'Group queries' do
     let!(:group) { create(:group, course: 2, curator: create(:lecturer, name: 'Jason Padberg')) }
     let(:query) { <<~GQL }
       query group($id: ID!){
-        group(id: $id){
-          id,
-          course,
-          formOfEducation,
-          specializationCode,
-          curator{
+        node(id: $id){
+        ... on Group{
             id,
-            name,
-            academicDegree
-          }
-          department{
-            id,
-            name,
-            departmentType,
-            formationDate
+            course,
+            formOfEducation,
+            specializationCode,
+            curator{
+              name,
+              academicDegree
+            }
+            department{
+              name,
+              departmentType,
+              formationDate
+            }
           }
         }
       }
     GQL
 
-    let(:variables) { {"id": group.id} }
+    let(:variables) { {"id": make_global_id(group)} }
 
     it 'returns one group' do
       data = result.dig('data')
@@ -81,10 +81,10 @@ RSpec.describe 'Group queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'group')).to eq(
-        {'id'=>'1', 'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
-         'curator'=>{'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1},
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
+      expect(result.dig('data', 'node')).to eq(
+        {'id'=>make_global_id(group), 'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
+         'curator'=>{ 'name'=>'Jason Padberg', 'academicDegree'=>1 },
+         'department'=>{ 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20' } }
                                              )
     end
   end

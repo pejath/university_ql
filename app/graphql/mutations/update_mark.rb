@@ -1,19 +1,21 @@
 module Mutations
   class UpdateMark < BaseMutation
-    argument :id, ID, required: true
-    argument :mark, Integer, required: true
-    argument :student_id, ID, required: true
-    argument :subject_id, ID, required: true
-    argument :lecturer_id, ID, required: true
+    argument :mark_id, Types::GlobalId, required: true, loads: Types::Mark
+    argument :student_id, Types::GlobalId, required: true, loads: Types::Student
+    argument :subject_id, Types::GlobalId, required: true, loads: Types::Subject
+    argument :lecturer_id, Types::GlobalId, required: true, loads: Types::Lecturer
+
+    argument :value, Integer, required: true
 
     type Types::Mark
 
-    def resolve(student_id:, subject_id:, lecturer_id:, mark:)
+    def resolve(student:, subject:, lecturer:, mark:, value:)
+      puts mark
       mark.update(
-        student_id: student_id,
-        subject_id: subject_id,
-        lecturer_id: lecturer_id,
-        mark: mark
+        student: student,
+        subject: subject,
+        lecturer: lecturer,
+        mark: value
       )
       mark.reload
     end

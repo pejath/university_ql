@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Department queries' do
   subject(:result) { execute_query(query, variables: variables) }
-  let(:variables) {{}}
+  let(:variables) { {} }
 
   describe '#departments' do
     let!(:department) { FactoryBot.create_list(:department, 2) }
@@ -16,7 +16,6 @@ RSpec.describe 'Department queries' do
           departmentType,
           formationDate
           faculty {
-            id
             name
             formationDate
           }
@@ -31,10 +30,10 @@ RSpec.describe 'Department queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'departments')).to eq([
-        { 'id' => '1', 'name' => 'department_1', 'departmentType' => 'BASIC', 'formationDate' => '2002-12-20',
-          'faculty' => { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } },
-        { 'id' => '2', 'name' => 'department_2', 'departmentType' => 'BASIC', 'formationDate' => '2002-12-20',
-          'faculty' => { 'id' => '2', 'name' => 'faculty_2', 'formationDate' => '2002-12-20' } }
+        { 'id' => make_global_id(department[0]), 'name' => 'department_1', 'departmentType' => 'BASIC', 'formationDate' => '2002-12-20',
+          'faculty' => { 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } },
+        { 'id' =>  make_global_id(department[1]), 'name' => 'department_2', 'departmentType' => 'BASIC', 'formationDate' => '2002-12-20',
+          'faculty' => { 'name' => 'faculty_2', 'formationDate' => '2002-12-20' } }
                                                       ])
     end
   end
@@ -43,21 +42,22 @@ RSpec.describe 'Department queries' do
     let!(:department) { create(:department) }
     let(:query) { <<~GQL }
       query department($id: ID!){
-        department(id: $id){
-          id,
-          name,
-          departmentType,
-          formationDate
-          faculty {
-            id
-            name
+        node(id: $id){
+          ... on Department{
+            id,
+            name,
+            departmentType,
             formationDate
+            faculty {
+              name
+              formationDate
+            }
           }
         }
       }
     GQL
 
-    let(:variables) { {"id": department.id} }
+    let(:variables) { { "id": make_global_id(department) } }
 
     it 'returns one department' do
       data = result.dig('data')
@@ -65,9 +65,9 @@ RSpec.describe 'Department queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'department')).to eq(
-        { 'id' => '1', 'name' => 'department_1', 'departmentType' => 'BASIC', 'formationDate' => '2002-12-20',
-          'faculty' => { 'id' => '1', 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } }
+      expect(result.dig('data', 'node')).to eq(
+        { 'id' => make_global_id(department), 'name' => 'department_1', 'departmentType' => 'BASIC', 'formationDate' => '2002-12-20',
+          'faculty' => { 'name' => 'faculty_1', 'formationDate' => '2002-12-20' } }
                                                   )
     end
   end

@@ -7,10 +7,8 @@ module Types
       value 'CORRESPONDENCE', value: 'correspondence'
       value 'FULL_TIME', value: 'full_time'
     end
-
     implements Interfaces::Timestamps
 
-    field :id, ID, null: false
     field :course, Integer, null: false
     field :specialization_code, Integer, null: false
     field :form_of_education, FormOfEducation, null: false

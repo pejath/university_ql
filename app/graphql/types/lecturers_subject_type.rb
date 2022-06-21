@@ -4,8 +4,6 @@ module Types
   class LecturersSubjectType < Types::BaseObject
     implements Interfaces::Timestamps
 
-    field :id, ID, null: false
-
     # belongs_to
     field :subject, Subject, null: false
     def subject
