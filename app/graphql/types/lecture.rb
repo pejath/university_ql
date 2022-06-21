@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class Lecture < Types::BaseRecordObject
+  class Lecture < Types::BaseObject
     field :corpus, Integer, null: false
     field :weekday, Weekday, null: false
     field :auditorium, Integer, null: false

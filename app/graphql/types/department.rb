@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class Department < Types::BaseRecordObject
+  class Department < Types::BaseObject
     class DepartmentTypes < BaseEnum
       value 'INTERFACULT', value: 'Interfacult'
       value 'BASIC', value: 'Basic'

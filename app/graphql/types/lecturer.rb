@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class Lecturer < Types::BaseRecordObject
+  class Lecturer < Types::BaseObject
     field :name, String, null: false
     field :academic_degree, Integer, null: false
 

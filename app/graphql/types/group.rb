@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class Group < Types::BaseRecordObject
+  class Group < Types::BaseObject
     class FormOfEducation < BaseEnum
       value 'EVENING', value: 'evening'
       value 'CORRESPONDENCE', value: 'correspondence'
