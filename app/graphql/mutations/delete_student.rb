@@ -1,11 +1,10 @@
 module Mutations
   class DeleteStudent < BaseMutation
-    argument :id, ID, required: true
+    argument :student_id, Types::GlobalId, required: true, loads: Types::Student
 
     type Types::Student
 
-    def resolve(id:)
-      student = Student.find(id)
+    def resolve(student:)
       student.destroy!
     end
   end

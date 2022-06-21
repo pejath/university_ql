@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Student queries' do
+RSpec.describe 'Student mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) { {} }
 
@@ -20,7 +20,7 @@ RSpec.describe 'Student queries' do
     let(:variables) {
       { "input" => {
         "name": "Nikita",
-        "groupId": group.id
+        "groupId": make_global_id(group)
       }}}
 
     it 'creates one student' do
@@ -29,7 +29,7 @@ RSpec.describe 'Student queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'createStudent')).to eq(
-        { 'name'=>'Nikita', 'group'=>{'id'=>group.id.to_s} }
+        { 'name'=>'Nikita', 'group'=>{'id'=>make_global_id(group)} }
                                                      )
     end
   end
@@ -49,16 +49,16 @@ RSpec.describe 'Student queries' do
 
     let(:variables) {
       { "input" => {
-        "id": student.id,
+        "studentId": make_global_id(student),
         "name": "Nikita",
-        "groupId": group.id
+        "groupId": make_global_id(group)
       }}}
 
     it 'updates student' do
       expect(student.id).to eq(1)
       expect(student.name).not_to eq('Nikita')
       expect(result.dig('data', 'updateStudent')).to eq(
-        {'id'=>student.id.to_s, 'name'=>'Nikita', 'group'=>{'id'=>group.id.to_s} }
+        {'id'=>make_global_id(student), 'name'=>'Nikita', 'group'=>{'id'=>make_global_id(group)} }
                                                      )
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe 'Student queries' do
 
     let(:variables) {
       { "input" => {
-        "id": student.id
+        "studentId": make_global_id(student)
       }}}
 
     it 'deletes student' do
@@ -86,7 +86,7 @@ RSpec.describe 'Student queries' do
 
     it 'deletes correct student' do
       expect(result.dig('data', 'deleteStudent')).to eq(
-        { 'id'=>student.id.to_s, 'name'=>student.name, "group"=>{"id"=>student.group.id.to_s} }
+        { 'id'=>make_global_id(student), 'name'=>student.name, "group"=>{"id"=>make_global_id(student.group)} }
                                                      )
     end
   end
