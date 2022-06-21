@@ -3,12 +3,12 @@
 module Types
   # This duplicates some logic from the relay/global_id implementation of the
   # graphql-ruby gem. Ideally these would be unified and we'd replace the ID type.
-  class GlobalID < Types::BaseScalar
+  class GlobalId < Types::BaseScalar
     description "A URN that globally identifies an object by including its type and ID"
 
     class << self
       def coerce_input(input_value, context)
-        context.schema.parse_global_id(input_value, context)
+        context.schema.parse_global_id(input_value)
       rescue URN::ParseError => ex
         raise GraphQL::CoercionError, ex.message
       end
