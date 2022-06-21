@@ -2,6 +2,8 @@
 
 module Types
   class Faculty < Types::BaseObject
+    implements Interfaces::Timestamps
+
     field :id, ID, null: false
     field :name, String, null: false
     field :formation_date, GraphQL::Types::ISO8601Date, null: false

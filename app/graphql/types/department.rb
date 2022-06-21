@@ -8,6 +8,8 @@ module Types
       value 'MILITARY', value: 'Military'
     end
 
+    implements Interfaces::Timestamps
+
     field :id, ID, null: false
     field :name, String, null: false
     field :department_type, DepartmentTypes, null: false
