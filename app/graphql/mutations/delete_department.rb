@@ -5,7 +5,6 @@ module Mutations
     type Types::Department
 
     def resolve(department:)
-      puts department
       department.destroy!
     end
   end
