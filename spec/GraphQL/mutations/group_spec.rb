@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Group queries' do
+RSpec.describe 'Group mutations' do
   subject(:result) { execute_query(query, variables: variables) }
   let(:variables) {{}}
 
@@ -23,8 +23,8 @@ RSpec.describe 'Group queries' do
 
     let(:variables) {
       { "input" => {
-        "curatorId": lecturer.id,
-        "departmentId": department.id,
+        "curatorId": make_global_id(lecturer),
+        "departmentId": make_global_id(department),
         "course": 2,
         "specializationCode": 223,
         "formOfEducation": "EVENING"
@@ -37,7 +37,7 @@ RSpec.describe 'Group queries' do
     it 'returns correct data' do
       expect(result.dig('data', 'createGroup')).to eq(
         {'course'=>2, 'formOfEducation'=>'EVENING', 'specializationCode'=>223,
-        'curator'=>{'id'=>lecturer.id.to_s}, 'department'=>{'id'=>department.id.to_s}}
+        'curator'=>{'id'=>make_global_id(lecturer)}, 'department'=>{'id'=>make_global_id(department)}}
                                                    )
     end
   end
@@ -61,9 +61,9 @@ RSpec.describe 'Group queries' do
 
     let(:variables) {
       { "input" => {
-        "id": group.id,
-        "curatorId": lecturer.id,
-        "departmentId": department.id,
+        "groupId": make_global_id(group),
+        "curatorId": make_global_id(lecturer),
+        "departmentId": make_global_id(department),
         "course": 2,
         "specializationCode": 223,
         "formOfEducation": "CORRESPONDENCE"
@@ -76,7 +76,7 @@ RSpec.describe 'Group queries' do
       expect(group.specialization_code).to eq(1)
       expect(result.dig('data', 'updateGroup')).to eq(
         {'course'=>2, 'formOfEducation'=>'CORRESPONDENCE', 'specializationCode'=>223,
-        'curator'=>{'id'=>lecturer.id.to_s}, 'department'=>{'id'=>department.id.to_s}}
+        'curator'=>{'id'=>make_global_id(lecturer)}, 'department'=>{'id'=>make_global_id(department)}}
                                                      )
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe 'Group queries' do
 
     let(:variables) {
       { "input" => {
-        "id": group.id
+        "groupId": make_global_id(group)
       }}}
 
     it 'deletes group' do
@@ -107,8 +107,8 @@ RSpec.describe 'Group queries' do
 
     it 'deletes correct group' do
       expect(result.dig('data', 'deleteGroup')).to eq(
-        { 'id'=>group.id.to_s,'course'=>1, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
-        'curator'=>{'id'=>group.curator.id.to_s}, 'department'=>{'id'=>group.department.id.to_s} }
+        { 'id'=>make_global_id(group),'course'=>1, 'formOfEducation'=>'EVENING', 'specializationCode'=>1,
+        'curator'=>{'id'=>make_global_id(group.curator)}, 'department'=>{'id'=>make_global_id(group.department)} }
                                                      )
     end
   end
