@@ -2,7 +2,8 @@
 
 module Types
   class Lecturer < Types::BaseObject
-    field :id, ID, null: false
+    implements Interfaces::Timestamps
+
     field :name, String, null: false
     field :academic_degree, Integer, null: false
 

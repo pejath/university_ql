@@ -31,11 +31,11 @@ RSpec.describe 'Lecturer queries' do
 
     it 'returns correct data' do
       expect(result.dig('data', 'lecturers')).to eq([
-        {'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-         'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}},
+        {'id'=>make_global_id(lecturer[0]), 'name'=>'Jason Padberg', 'academicDegree'=>1,
+         'department'=>{'id'=>make_global_id(lecturer[0].department), 'name'=>'department_1', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}},
 
-        {'id'=>'2', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-         'department'=>{'id'=>'2', 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
+        {'id'=>make_global_id(lecturer[1]), 'name'=>'Jason Padberg', 'academicDegree'=>1,
+         'department'=>{'id'=>make_global_id(lecturer[1].department), 'name'=>'department_2', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
                                                     ])
     end
   end
@@ -44,21 +44,23 @@ RSpec.describe 'Lecturer queries' do
     let!(:lecturer) { create(:lecturer, name: 'Jason Padberg') }
     let(:query) { <<~GQL }
       query Lecturer($id: ID!){
-        lecturer(id: $id){
-          id,
-          name,
-          academicDegree,
-          department{
+        node(id: $id){
+          ... on Lecturer{
             id,
             name,
-            departmentType,
-            formationDate
+            academicDegree,
+            department{
+              id,
+              name,
+              departmentType,
+              formationDate
+            }
           }
         }
       }
     GQL
 
-    let(:variables) {{"id": lecturer.id}}
+    let(:variables) {{"id": make_global_id(lecturer)}}
 
     it 'returns one lecturer' do
       data = result.dig('data')
@@ -66,9 +68,9 @@ RSpec.describe 'Lecturer queries' do
     end
 
     it 'returns correct data' do
-      expect(result.dig('data', 'lecturer')).to eq(
-        {'id'=>'1', 'name'=>'Jason Padberg', 'academicDegree'=>1,
-        'department'=>{'id'=>'1', 'name'=>'department_1', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
+      expect(result.dig('data', 'node')).to eq(
+        {'id'=>make_global_id(lecturer), 'name'=>'Jason Padberg', 'academicDegree'=>1,
+        'department'=>{'id'=>make_global_id(lecturer.department), 'name'=>'department_1', 'departmentType'=>'BASIC', 'formationDate'=>'2002-12-20'}}
                                                 )
     end
   end

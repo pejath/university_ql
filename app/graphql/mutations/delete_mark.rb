@@ -1,11 +1,10 @@
 module Mutations
   class DeleteMark < BaseMutation
-    argument :id, ID, required: true
+    argument :mark_id, Types::GlobalId, required: true, loads: Types::Mark
 
     type Types::Mark
 
-    def resolve(id:)
-      mark = Mark.find(id)
+    def resolve(mark:)
       mark.destroy!
     end
   end

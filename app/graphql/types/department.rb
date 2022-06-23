@@ -7,8 +7,8 @@ module Types
       value 'BASIC', value: 'Basic'
       value 'MILITARY', value: 'Military'
     end
+    implements Interfaces::Timestamps
 
-    field :id, ID, null: false
     field :name, String, null: false
     field :department_type, DepartmentTypes, null: false
     field :formation_date, GraphQL::Types::ISO8601Date, null: false

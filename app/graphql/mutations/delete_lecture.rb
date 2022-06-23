@@ -1,11 +1,10 @@
 module Mutations
   class DeleteLecture < BaseMutation
-    argument :id, ID, required: true
+    argument :lecture_id, Types::GlobalId, required: true, loads: Types::Lecture
 
     type Types::Lecture
 
-    def resolve(id:)
-      lecture = Lecture.find(id)
+    def resolve(lecture:)
       lecture.destroy!
     end
   end

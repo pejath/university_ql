@@ -1,20 +1,19 @@
 module Mutations
   class UpdateGroup < BaseMutation
-    argument :id, ID, required: true
-    argument :curator_id, ID, required: true
-    argument :department_id, ID, required: true
+    argument :group_id, Types::GlobalId, required: true, loads: Types::Group
+    argument :curator_id, Types::GlobalId, required: true, loads: Types::Lecturer
+    argument :department_id, Types::GlobalId, required: true, loads: Types::Department
+
     argument :course, Integer, required: true
     argument :specialization_code, Integer, required: true
     argument :form_of_education, Types::Group::FormOfEducation, required: true
 
     type Types::Group
 
-    def resolve(id:, curator_id:, department_id:, course:, form_of_education:, specialization_code:)
-      group = Group.find(id)
-      curator = Lecturer.find(curator_id)
+    def resolve(group:, curator:, department:, course:, form_of_education:, specialization_code:)
       group.update(
         curator: curator,
-        department_id: department_id,
+        department: department,
         course: course,
         form_of_education: form_of_education,
         specialization_code: specialization_code
