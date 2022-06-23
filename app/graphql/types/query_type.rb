@@ -9,11 +9,10 @@ module Types
 
     # faculty
     field :faculties, [Faculty], null: true do
-      argument :sort, Sorting::BaseInputObject::Input, required: false
+      argument :sort, Sorting::Base::Input, required: false
     end
     def faculties(sort: [])
-      scope = ::Faculty.all
-      Sorting::Base.sorting_with(scope, sort)
+      Sorting::Base.sort_with(::Faculty.all, sort)
     end
 
     field :faculty, Faculty, null: false do
