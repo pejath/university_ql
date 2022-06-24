@@ -9,10 +9,13 @@ module Types
 
     # faculty
     field :faculties, [Faculty], null: true do
-      argument :sort, Sorting::Base::Input, required: false
+      argument :sort, [Sorting::Base::Input], required: false
+      argument :filter, [Filtering::Base::Input], required: false
     end
-    def faculties(sort: [])
-      Sorting::Base.sort_with(::Faculty.all, sort)
+    def faculties(sort: [], filter: [])
+      scope = ::Faculty.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     # department

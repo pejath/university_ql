@@ -1,3 +1,4 @@
+
 module Sorting
   class Base
     class Input < Types::BaseInputObject
@@ -7,10 +8,13 @@ module Sorting
 
     def self.sort_with(scope, sort)
       return scope if sort.empty?
-      return scope unless scope.has_attribute?(sort[:key]) && %w[ASC DESC].include?(sort[:direction].upcase)
 
-      scope.order(sort[:key] => sort[:direction].upcase)
+      sort.map(&:to_h).each do |input|
+        next unless scope.has_attribute?(input[:key]) && %w[ASC DESC].include?(input[:direction].upcase)
 
+        scope = scope.order(input[:key] => input[:direction].upcase)
+      end
+      scope
     end
   end
 end
