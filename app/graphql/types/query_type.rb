@@ -8,9 +8,14 @@ module Types
     # They will be entry points for queries on your schema.
 
     # faculty
-    field :faculties, [Faculty], null: false
-    def faculties
-      ::Faculty.all
+    field :faculties, [Faculty], null: true do
+      argument :sort, [Sorting::Base::Input], required: false
+      argument :filter, [Filtering::Base::Input], required: false
+    end
+    def faculties(sort: [], filter: [])
+      scope = ::Faculty.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     # department
