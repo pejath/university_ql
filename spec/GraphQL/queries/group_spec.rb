@@ -33,7 +33,6 @@ RSpec.describe 'Group queries' do
 
     it 'returns all groups' do
       data = result.dig('data', 'groups')
-      puts result
       expect(data.count).to eq(2)
     end
 

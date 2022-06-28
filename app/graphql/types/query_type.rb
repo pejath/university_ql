@@ -9,8 +9,8 @@ module Types
 
     # faculty
     field :faculties, [Faculty], null: true do
-      argument :sort, [Sorting::Base::Input], required: false
-      argument :filter, [Filtering::Base::Input], required: false
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
     end
     def faculties(sort: [], filter: [])
       scope = ::Faculty.all
@@ -19,21 +19,31 @@ module Types
     end
 
     # department
-    field :departments, [Department], null: false
-    def departments
-      ::Department.all
+    field :departments, [Department], null: false do
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
+    end
+    def departments(sort: [], filter: [])
+      scope = ::Department.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     # lecturer
-    field :lecturers, [Lecturer], null: false
-    def lecturers
-      ::Lecturer.all
+    field :lecturers, [Lecturer], null: false do
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
+    end
+    def lecturers(sort: [], filter: [])
+      scope = ::Lecturer.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     # lecture
     field :lectures, [Lecture], null: false do
-      argument :sort, [Sorting::Base::Input], required: false
-      argument :filter, [Filtering::Base::Input], required: false
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
     end
     def lectures(sort: [], filter: [])
       scope = ::Lecture.all
@@ -42,21 +52,36 @@ module Types
     end
 
     # student
-    field :students, [Student], null: false
-    def students
-      ::Student.all
+    field :students, [Student], null: false do
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
+    end
+    def students(sort: [], filter: [])
+      scope = ::Student.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     # subject
-    field :subjects, [Subject], null: false
-    def subjects
-      ::Subject.all
+    field :subjects, [Subject], null: false do
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
+    end
+    def subjects(sort: [], filter: [])
+      scope = ::Subject.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     # group
-    field :groups, [Group], null: false
-    def groups
-      ::Group.order(:department_id)
+    field :groups, [Group], null: false do
+      argument :sort, [Sorting::Base::SortInput], required: false
+      argument :filter, [Filtering::Base::FilterInput], required: false
+    end
+    def groups(sort: [], filter: [])
+      scope = ::Group.all
+      scope = Filtering::Base.filter_with(scope, filter)
+      Sorting::Base.sort_with(scope, sort)
     end
 
     #lecture_time

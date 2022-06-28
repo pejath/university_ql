@@ -1,7 +1,7 @@
 
 module Sorting
   class Base
-    class Input < Types::BaseInputObject
+    class SortInput < Types::BaseInputObject
       argument :key, String, required: true
       argument :direction, Types::SortDirection, required: true
     end
