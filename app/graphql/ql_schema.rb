@@ -38,7 +38,7 @@ class QlSchema < GraphQL::Schema
   end
 
   # Given a string global id, find the object
-  def self.object_from_id(id, query_ctx)
+  def self.object_from_id(id, query_ctx = nil)
     # If field field type is a `Types::GlobalID`, then it gets parsed before arriving here.
     # Only `ID` fields need to be parsed from a string into a URN.
     urn = if id.is_a?(::URN::Generic)
