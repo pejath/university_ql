@@ -39,5 +39,7 @@ module Types
     field :create_subject, mutation: Mutations::CreateSubject
     field :update_subject, mutation: Mutations::UpdateSubject
     field :delete_subject, mutation: Mutations::DeleteSubject
+
+    field :delete_record, mutation: Mutations::DeleteRecord
   end
 end
