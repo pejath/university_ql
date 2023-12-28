@@ -30,6 +30,7 @@ gem 'urn', '~> 2.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'codecov'
 gem 'simplecov'
 gem 'simplecov-cobertura'
 
